@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sign in — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body style="background:#fff">
+<div class="auth">
+  <div class="side-img" id="side"></div>
+  <div class="panel-a" id="app"></div>
+</div>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const [site,me,P]=await Promise.all([fetch('/api/site').then(r=>r.json()),Auth.load(),getProducts()]);SITE=site;const s=site.settings;
+  const next=new URLSearchParams(location.search).get('next');
+  const safeNext=next&&next.startsWith('/')&&!next.startsWith('//')&&!next.startsWith('/login')?next:'';
+  const go=role=>location.href=role==='admin'?(safeNext.startsWith('/admin')?safeNext:'/admin'):(safeNext&&!safeNext.startsWith('/admin')?safeNext:'/account');
+  if(me.role) return go(me.role);
+  let mode=new URLSearchParams(location.search).get('mode')==='register'?'register':'login';
+  const img=site.banners[0]?.image||P[0]?.variants[0]?.images[0]||'';
+  $('#side').innerHTML=`${img?`<img class="bg" src="${esc(img)}" alt="">`:''}<div class="q"><span class="eyebrow">${esc(s.siteName)}</span><h2>Tailored protection for your phone.</h2><p>Save your details for faster WhatsApp orders and track every order in one place.</p></div>`;
+  const draw=()=>{
+    $('#app').innerHTML=`<a class="logo" href="/"><img src="${esc(s.logo)}" alt="${esc(s.siteName)}">${s.showWordmark!==false?`<span class="wm"><b>${esc(s.siteName.toUpperCase())}</b><small>${esc(s.logoSubtitle||'iPhone · Pixel')}</small></span>`:''}</a>
+      <h1>${mode==='login'?'Welcome back':'Create account'}</h1>
+      <p class="muted">${mode==='login'?'Sign in with your phone number or email.':'It takes less than a minute.'}</p>
+      <div class="tabs"><button class="${mode==='login'?'on':''}" data-m="login">Sign in</button><button class="${mode==='register'?'on':''}" data-m="register">Register</button></div>
+      <form id="f" novalidate>
+      ${mode==='login'?`
+        <div class="fld"><label for="id">Phone or email</label><input class="input" id="id" name="id" autocomplete="username" placeholder="01XXXXXXXXX or you@email.com" required></div>
+        <div class="fld"><label for="pw">Password</label><input class="input" id="pw" name="password" type="password" autocomplete="current-password" required></div>`:`
+        <div class="fld"><label for="nm">Full name</label><input class="input" id="nm" name="name" autocomplete="name" required></div>
+        <div class="fld"><label for="ph">Mobile number</label><input class="input" id="ph" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required></div>
+        <div class="fld"><label for="em">Email <small>(optional)</small></label><input class="input" id="em" name="email" type="email" autocomplete="email"></div>
+        <div class="fld"><label for="pw">Password <small>(min 6 characters)</small></label><input class="input" id="pw" name="password" type="password" autocomplete="new-password" required></div>`}
+        <div class="err" id="err" role="alert"></div>
+        <button class="btn block" style="height:46px">${mode==='login'?'Sign in':'Create account'}</button>
+      </form>
+      <p class="muted" style="font-size:13.5px;margin-top:14px;text-align:center">${mode==='login'?'New here? <a href="#" data-m="register" style="color:var(--navy);text-decoration:underline">Create an account</a>':'Already registered? <a href="#" data-m="login" style="color:var(--navy);text-decoration:underline">Sign in</a>'}</p>
+      <a class="backlink" href="${safeNext&&!safeNext.startsWith('/admin')?esc(safeNext):'/'}">${ICON.arrow} Back to website</a>`;
+    $('#f').onsubmit=async e=>{e.preventDefault();const btn=$('#f button');btn.disabled=true;$('#err').textContent='';
+      try{const r=await fetch(mode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});
+        const j=await r.json();if(!r.ok)throw new Error(j.error||'Something went wrong');store.set('cc_token',j.token);go(j.role);}
+      catch(er){$('#err').textContent=er.message;btn.disabled=false;}};
+    $('#app input')?.focus();
+  };
+  $('#app').addEventListener('click',e=>{const t=e.target.closest('[data-m]');if(t){e.preventDefault();mode=t.dataset.m;draw();}});
+  draw();
+})();
+</script></body></html>

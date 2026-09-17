@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Contact — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / Contact</div><h1>Get in touch</h1><p>The fastest way to reach us is WhatsApp — we usually reply within minutes.</p></div></div></div>
+<main class="container" id="app" style="padding:56px 0 90px"></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{const s=(await boot('contact')).settings;
+$('#app').innerHTML=`<div class="cards3">
+ <a class="c" href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener"><span style="color:#1faa53">${ICON.wa.replace('<svg','<svg width="32" height="32"')}</span><h4>WhatsApp</h4><p>${esc(s.phone)}<br>Orders, sizing & colour questions</p></a>
+ <a class="c" href="mailto:${esc(s.email)}">${ICON.mail}<h4>Email</h4><p>${esc(s.email)}</p></a>
+ <div class="c">${ICON.pin}<h4>Address</h4><p>${esc(s.address)}</p></div></div>
+ <div style="margin-top:30px;border-radius:24px;overflow:hidden;border:1px solid var(--line)"><iframe title="Map" src="https://maps.google.com/maps?q=${encodeURIComponent(s.address)}&output=embed" style="width:100%;height:420px;border:0;display:block" loading="lazy"></iframe></div>`;})();
+</script></body></html>

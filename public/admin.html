@@ -1,0 +1,468 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin — Cravat Cases</title><meta name="robots" content="noindex"><link rel="icon" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="stylesheet" href="/css/style.css?v=7">
+<style>
+html{scroll-behavior:auto!important}body{background:#F4F2EE}
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:var(--navy);color:#c5ccda;padding:18px 12px 12px;position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}.side .snav{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px;margin:0 -4px;padding:0 4px;scrollbar-width:thin;scrollbar-color:#2a3a5c transparent}.side .logo{flex:none}
+.side .logo{padding:0 8px 14px}.side .logo .wm b{color:#fff;font-size:20px}.side .logo .wm small{color:var(--gold-l)}.side .logo img{width:40px;height:40px}
+.side button{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;border:none;background:none;color:#c5ccda;text-align:left;font-size:15px;width:100%}
+.side button:hover{background:rgba(255,255,255,.06);color:#fff}.side button.on{background:rgba(233,210,154,.14);color:var(--gold-l)}
+.side button svg{width:19px;height:19px}.side .pill{margin-left:auto;background:var(--sale);color:#fff;border-radius:999px;font-size:11px;padding:1px 8px}
+.side .grp{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6F7A90;padding:14px 14px 4px}.side button{padding:9px 14px;font-size:14px}.side .bottom{flex:none;background:var(--navy);margin-top:auto;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.mainA{padding:30px 34px 80px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:12px;flex-wrap:wrap}.top h1{font-size:40px}
+.panel{background:#fff;border-radius:18px;padding:24px;border:1px solid var(--line);margin-bottom:20px}
+.panel h3{font-size:24px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #F0ECE4;vertical-align:middle}th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+tr:hover td{background:#FCFBF8}
+td img{width:48px;height:58px;border-radius:8px;object-fit:cover;background:var(--sand)}
+.danger{background:#B3261E!important;border-color:#B3261E!important;color:#fff!important}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fld label{display:block;font-size:13.5px;font-weight:500;margin:0 0 6px}.fld{margin-bottom:14px}.fld small{color:var(--muted);font-weight:400}
+.boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:4px 10px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px}
+.boxes label{display:flex;gap:8px;align-items:center;font-weight:400;margin:0;padding:3px 0}
+.boxes input,.ckl input{accent-color:var(--navy)}
+.card2{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;background:#FCFBF8}
+.vrow{display:grid;grid-template-columns:1fr 64px auto auto;gap:10px;align-items:center}
+.imgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.imgs .im{position:relative}.imgs img{width:76px;height:92px;object-fit:cover;border-radius:10px;background:var(--sand)}
+.imgs .x,.imgs .mv{position:absolute;top:-7px;width:24px;height:24px;border-radius:50%;border:none;color:#fff;font-size:12px;display:grid;place-items:center}
+.imgs .x{right:-7px;background:#B3261E}.imgs .mv{left:-7px;background:var(--navy)}
+.up{width:76px;height:92px;border:2px dashed #d8d0c2;border-radius:10px;display:grid;place-items:center;color:#a39b8c;cursor:pointer;font-size:26px}.up:hover{border-color:var(--gold)}
+.login{max-width:420px;margin:12vh auto;background:#fff;padding:40px 34px;border-radius:24px;border:1px solid var(--line);text-align:center;box-shadow:var(--shadow)}
+.login img{width:76px;margin:0 auto 14px}
+.st{display:inline-block;font-size:12px;padding:3px 10px;border-radius:999px;background:#EEF0F4;font-weight:500;text-transform:capitalize}
+.st.new{background:#FFF3D6;color:#8A5A00}.st.confirmed{background:#E3EEFF;color:#1D4ED8}.st.shipped{background:#EDE7FF;color:#5B3CC4}.st.delivered{background:#E3F5EA;color:#1F7A4D}.st.cancelled{background:#FDE8E6;color:#B3261E}.st.live{background:#E3F5EA;color:#1F7A4D}.st.hidden{background:#EEE;color:#666}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}.kpi small{color:var(--muted);font-size:13px}.kpi b{display:block;font-family:var(--serif);font-size:42px;color:var(--navy);line-height:1.1;font-weight:600}
+.imgpick{display:flex;gap:12px;align-items:center}.imgpick img{width:64px;height:64px;border-radius:10px;object-fit:cover;background:var(--sand)}
+.hint{font-size:13px;color:var(--muted);margin-top:-6px;margin-bottom:14px}
+.mtop{display:none}.sshade{display:none}@media(max-width:860px){body.sopen .sshade{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:79}}
+.sticky-save{position:sticky;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);margin:20px -24px -24px;padding:14px 24px;display:flex;gap:10px;justify-content:flex-end;border-radius:0 0 18px 18px}
+.order-items div{font-size:13.5px}
+@media(max-width:1000px){.kpis{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){.panel table{min-width:620px}.panel{padding:16px}.sticky-save{margin:16px -16px -16px;padding:12px 16px}.shell{grid-template-columns:1fr}.side{position:fixed;inset:0 auto 0 0;width:260px;z-index:80;transform:translateX(-100%);transition:.3s}.side.open{transform:none}.mainA{padding:18px 14px 80px}.mtop{display:flex;align-items:center;gap:10px;margin-bottom:10px}.g2,.g3{grid-template-columns:1fr}.hide-m{display:none}.top h1{font-size:32px}}
+</style></head><body>
+<div id="root"></div>
+<script src="/js/common.js?v=7"></script>
+<script>
+let TOKEN=store.get('cc_token','');
+const S={tab:(location.hash.slice(1)||'dashboard'),products:[],orders:[],customers:[],site:null,edit:null};
+const IC={dash:svg('<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'),
+  orders:svg('<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>'),box:svg('<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>'),
+  grid:svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'),
+  img:svg('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-9 9"/>'),tag:svg('<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.2"/>'),
+  phone:ICON.fit,cog:svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>'),
+  user:svg('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/>'),menu:ICON.menu,plus:svg('<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'),pdf:svg('<path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M9 14h6M9 17h4"/>'),out:svg('<path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>'),eye:svg('<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>')};
+const shrink=f=>new Promise((ok,no)=>{const img=new Image();img.onload=()=>{const k=Math.min(1,1400/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(img.src);ok(c.toDataURL('image/jpeg',.86));};img.onerror=no;img.src=URL.createObjectURL(f);});
+const uploadFiles=async files=>api('/api/admin/upload',{method:'POST',body:JSON.stringify({images:await Promise.all([...files].map(shrink))})});
+async function api(url,opt={}){
+  const r=await fetch(url,{...opt,headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOKEN}});
+  if(r.status===401){renderLogin();throw new Error('Please log in');}
+  const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||'Something went wrong'); return j;
+}
+const flash=toast;
+function logout(){Auth.logout('/login');}
+const fin=p=>priceInfo(p).final;
+const cname=id=>S.site.categories.find(c=>c.id===id)?.name||id;
+const bname=id=>S.site.brands.find(b=>b.id===id)?.name||id;
+const dt=t=>new Date(t).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const imgPick=(key,src)=>`<div class="imgpick"><img src="${esc(src||(S.site?.settings.logo||'/img/logo.png'))}" alt=""><label class="btn ghost sm">Upload photo<input type="file" accept="image/*" hidden data-img="${key}"></label>${src?`<button class="btn ghost sm" type="button" data-clearimg="${key}">Remove</button>`:''}</div>`;
+
+function renderLogin(){location.href='/login?next=/admin';}
+async function load(){
+  try{[S.products,S.site,S.orders,S.customers]=await Promise.all([api('/api/admin/products'),api('/api/admin/site'),api('/api/admin/orders'),api('/api/admin/customers')]);SITE=S.site;PRODUCTS=S.products;render();}catch(e){}
+}
+const TABS=[['dashboard','Dashboard','dash'],'Sales',['neworder','New order','plus'],['orders','Orders','orders'],['customers','Customers','user'],'Catalogue',['products','Products & stock','box'],['brands','Phones & models','phone'],['categories','Designs (categories)','grid'],['coupons','Coupons','tag'],'Website',['banners','Home banners','img'],['menu','Website menu','menu'],['pages','Pages & policies','pdf'],['settings','Site settings','cog'],['account','Login & password','user']];
+function render(){
+  const newOrders=S.orders.filter(o=>o.status==='new').length;
+  const navY=$('#snav')?.scrollTop||0,pageKey=S.tab+(S.edit?':edit':''),sameView=S._lastKey===pageKey,y=scrollY;
+  document.getElementById('root').innerHTML=`<div class="shell"><aside class="side" id="side"><a class="logo" href="/admin"><img src="${esc(S.site.settings.logo||(S.site?.settings.logo||'/img/logo.png'))}" alt=""><span class="wm"><b>${esc((S.site.settings.siteName||'').split(' ')[0].toUpperCase())}</b><small>Admin panel</small></span></a>
+    <nav class="snav" id="snav">${TABS.map(t=>typeof t==='string'?`<div class="grp">${t}</div>`:t).map(t=>typeof t==='string'?t:(([k,l,i])=>`<button class="${S.tab===k?'on':''}" data-tab="${k}">${IC[i]} ${l}${k==='orders'&&newOrders?`<span class="pill">${newOrders}</span>`:''}</button>`)(t)).join('')}</nav>
+    <div class="bottom"><div style="font-size:12px;color:#8e97aa;padding:0 14px 8px;overflow:hidden;text-overflow:ellipsis">${esc(S.site.admin?.email||'')}</div><button type="button" onclick="location.href='/'">${IC.eye} Back to website</button><button type="button" onclick="logout()">${IC.out} Log out</button></div></aside>
+    <div class="sshade" onclick="$('#side').classList.remove('open');document.body.classList.remove('sopen')"></div><main class="mainA"><div class="mtop"><button type="button" class="ibtn" onclick="$('#side').classList.add('open');document.body.classList.add('sopen')" aria-label="Menu">${ICON.menu}</button><b>Cravat Admin</b><a class="btn ghost sm" href="/" style="margin-left:auto">${IC.eye} Website</a><button type="button" class="btn ghost sm" onclick="logout()">${IC.out}</button></div><div id="view"></div></main></div>`;
+  $('#side').onclick=e=>{const b=e.target.closest('[data-tab]');if(b){document.body.classList.remove('sopen');S.tab=b.dataset.tab;S.edit=null;history.replaceState(null,'','#'+S.tab);render();}};
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('#view input:not([type=checkbox])'))e.preventDefault();},{once:true});
+  (({dashboard,neworder,orders,products:S.edit?editor:productList,categories,banners,coupons,customers,brands,settings,account,menu:menuEditor,pages:pagesEditor})[S.tab]||dashboard)();
+  $('#snav').scrollTop=navY;
+  // keep the page where it is when a section redraws itself; only jump to top when opening a different section
+  const view=$('#view'),d=Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
+  Object.defineProperty(view,'innerHTML',{configurable:true,get(){return d.get.call(this);},set(h){const yy=scrollY;d.set.call(this,h);scrollTo({top:yy,behavior:'instant'});}});
+  scrollTo({top:sameView?y:0,behavior:'instant'});S._lastKey=pageKey;
+}
+async function saveSite(part){await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(part)});S.site=await api('/api/admin/site');SITE=S.site;flash('Saved ✓');}
+
+// ---------- dashboard ----------
+function dashboard(){
+  const o=S.orders,today=o.filter(x=>Date.now()-x.createdAt<864e5).length,sale=S.products.filter(p=>priceInfo(p).off).length;
+  $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Welcome back</span><h1>Dashboard</h1></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" data-go="neworder">+ New order</button><button class="btn" data-go="products-new">+ Add product</button></div></div>
+  <div class="kpis"><div class="kpi"><small>New orders</small><b>${o.filter(x=>x.status==='new').length}</b></div><div class="kpi"><small>Orders (24h)</small><b>${today}</b></div><div class="kpi"><small>Customers</small><b>${S.customers.length}</b></div><div class="kpi"><small>On sale</small><b>${sale}</b></div></div>
+  ${(()=>{const set=S.site.settings,checks=[
+     [!!set.passwordChanged,'Change the admin password','account'],
+     [set.logo&&set.logo!=='/img/logo.png'||set.logoConfirmed,'Check your logo & website name','settings'],
+     [!!(set.phone&&set.whatsapp&&set.address),'Add phone, WhatsApp & address','settings'],
+     [S.products.length>0&&S.products.every(p=>p.variants.every(v=>v.images.length)),'Add products with photos','products'],
+     [S.products.some(p=>p.updatedAt&&p.updatedAt>(set.setupAt||0)),'Set real prices & stock for your products','products'],
+     [!!set.facebook,'Add your Facebook page link','settings']];
+   const done=checks.filter(c=>c[0]).length;
+   return done===checks.length?'':`<div class="panel"><div class="top" style="margin:0 0 8px"><h3 style="margin:0">Getting started <span class="muted" style="font-size:14px;font-weight:400">${done}/${checks.length} done</span></h3></div>
+     <div style="height:6px;background:var(--soft);border-radius:4px;overflow:hidden;margin-bottom:12px"><i style="display:block;height:100%;width:${done/checks.length*100}%;background:var(--ok)"></i></div>
+     ${checks.map(([ok,t,go])=>`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #F1EFEA"><span style="width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;${ok?'background:#DCFCE7;color:#166534':'border:2px solid #D1D5DB'}">${ok?'✓':''}</span><span style="${ok?'color:var(--muted);text-decoration:line-through':''}">${t}</span>${ok?'':`<button class="btn ghost sm" style="margin-left:auto" data-go="${go}">Open</button>`}</div>`).join('')}</div>`;})()}
+  <div class="panel"><div class="top" style="margin:0 0 10px"><h3 style="margin:0">Recent orders</h3><button class="btn ghost sm" data-go="orders">All orders</button></div>${orderTable(o.slice(0,6))}</div>
+  <div class="g2"><div class="panel"><h3>Quick actions</h3><div style="display:flex;flex-wrap:wrap;gap:8px">
+    <button class="btn ghost sm" data-go="brands">Phone models & photos</button><button class="btn ghost sm" data-go="categories">Designs</button><button class="btn ghost sm" data-go="banners">Edit home banners</button><button class="btn ghost sm" data-go="coupons">Create coupon</button><button class="btn ghost sm" data-go="settings">Contact & delivery</button></div></div>
+    <div class="panel"><h3>Low attention</h3><div class="muted" style="font-size:14.5px">${[S.products.filter(p=>!p.variants.some(v=>v.images.length)).length+' products without photos',S.products.filter(p=>p.active===false).length+' hidden products',S.products.filter(p=>!p.categories?.length).length+' products without a category',S.products.filter(p=>!totalStock(p)).length+' products sold out',S.products.filter(p=>p.variants.some(v=>qtyOf(v)>0&&qtyOf(v)<=5)).length+' products running low (5 or fewer)'].map(t=>`<div style="padding:4px 0">• ${t}</div>`).join('')}</div></div></div>`;
+  $('#view').onclick=e=>{const b=e.target.closest('[data-go]');if(!b)return;if(b.dataset.go==='products-new'){S.tab='products';S.edit=blankProduct();}else S.tab=b.dataset.go;history.replaceState(null,'','#'+S.tab);render();};
+  bindOrders();
+}
+// ---------- orders ----------
+const STAT=['new','confirmed','shipped','delivered','cancelled'];
+function orderTable(list){
+  if(!list.length)return '<p class="muted">No orders yet. Orders appear here when customers tap “Order on WhatsApp”.</p>';
+  return `<div style="overflow:auto"><table><thead><tr><th>Order</th><th>Customer</th><th class="hide-m">Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>${list.map(o=>`<tr>
+    <td><b>${o.no}</b><br><small class="muted">${dt(o.createdAt)}</small>${o.source==='manual'?'<br><span class="st" style="margin-top:3px">manual</span>':''}</td>
+    <td>${esc(o.customer.name||'—')}<br><small class="muted">${esc(o.customer.phone||'no phone')} · ${o.customer.area==='outside'?'Outside':'Inside'} Dhaka</small>${(o.customer.address||o.customer.thana||o.customer.district)?`<br><small class="muted">${esc([o.customer.address,o.customer.thana,o.customer.district].filter(Boolean).join(', '))}</small>`:''}${o.customer.note?`<br><small style="color:var(--gold-d)">Note: ${esc(o.customer.note)}</small>`:''}</td>
+    <td class="hide-m order-items">${o.items.map(i=>`<div>${esc(i.name)} — ${esc(i.model)}, ${esc(i.color)} × ${i.qty}</div>`).join('')}</td>
+    <td><b>${money(o.total)}</b>${o.coupon?`<br><small class="muted">${esc(o.coupon)}</small>`:''}</td>
+    <td><select class="input" style="height:36px;width:128px" data-os="${o.id}">${STAT.map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+    <td style="white-space:nowrap"><a class="btn ghost sm" href="/invoice?id=${o.id}" title="Invoice PDF">${IC.pdf} Invoice</a> ${o.customer.phone?`<a class="btn wa sm" target="_blank" rel="noopener" href="https://wa.me/${('88'+o.customer.phone.replace(/\D/g,'')).replace(/^8888/,'88')}">WhatsApp</a>`:''} <button class="btn ghost sm" data-od="${o.id}" aria-label="Delete order">✕</button></td></tr>`).join('')}</tbody></table></div>`;
+}
+function bindOrders(){
+  $('#view').addEventListener('change',async e=>{const id=e.target.dataset.os;if(!id)return;try{const o=await api('/api/admin/orders/'+id,{method:'PUT',body:JSON.stringify({status:e.target.value})});Object.assign(S.orders.find(x=>x.id===id),o);S.products=await api('/api/admin/products');flash('Status updated · stock adjusted');}catch(er){flash(er.message);}});
+  $('#view').addEventListener('click',async e=>{const b=e.target.closest('[data-od]');if(!b||!confirm('Delete this order?'))return;await api('/api/admin/orders/'+b.dataset.od,{method:'DELETE'});S.orders=S.orders.filter(o=>o.id!==b.dataset.od);render();});
+}
+function orders(){
+  let f='';const draw=()=>{$('#list').innerHTML=orderTable(S.orders.filter(o=>!f||o.status===f));};
+  $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Sales</span><h1>Orders</h1></div><div style="display:flex;gap:8px"><button class="btn ghost sm" id="rf">Refresh</button><button class="btn sm" onclick="S.tab='neworder';history.replaceState(null,'','#neworder');render()">+ New order</button></div></div>
+  <div class="panel"><div class="tabs" id="of" style="width:max-content;max-width:100%;margin-bottom:16px"><button class="on" data-f="">All (${S.orders.length})</button>${STAT.map(s=>`<button data-f="${s}" style="text-transform:capitalize">${s} (${S.orders.filter(o=>o.status===s).length})</button>`).join('')}</div><div id="list"></div>
+  <p class="hint" style="margin:14px 0 0">Orders are recorded when a customer taps “Send order on WhatsApp”. Stock is reduced automatically when you mark an order <b>confirmed</b> (and added back if you cancel it).</p></div>`;
+  $('#of').onclick=e=>{const b=e.target.closest('button');if(!b)return;f=b.dataset.f;$$('#of button').forEach(x=>x.classList.toggle('on',x===b));draw();};
+  $('#rf').onclick=async()=>{S.orders=await api('/api/admin/orders');render();flash('Updated');};
+  draw();bindOrders();
+}
+// ---------- manual order (phone / shop / Facebook) → invoice PDF ----------
+function neworder(){
+  const set=S.site.settings;
+  const O=S.draft=S.draft||{customer:{name:'',phone:'',area:'inside',district:'Dhaka',thana:'',address:'',note:''},items:[],delivery:+set.deliveryInside||0,deliveryTouched:false,discount:0,paid:0,status:'confirmed',payment:'Cash on delivery'};
+  const prod=slug=>S.products.find(p=>p.slug===slug);
+  const sub=()=>O.items.reduce((a,i)=>a+(+i.price||0)*(+i.qty||0),0);
+  const DISTRICTS=['Dhaka','Gazipur','Narayanganj','Chattogram','Cumilla','Sylhet','Rajshahi','Khulna','Barishal','Rangpur','Mymensingh','Bogura','Cox\'s Bazar','Jessore','Noakhali','Feni','Tangail','Narsingdi','Savar','Other'];
+  const totals=()=>{const sb=sub(),d=Math.min(sb,+O.discount||0),t=sb-d+(+O.delivery||0);return {sb,d,t,due:Math.max(0,t-(+O.paid||0))};};
+  const drawTotals=()=>{const t=totals();$('#tot').innerHTML=`<div class="r"><span>Subtotal</span><b>${money(t.sb)}</b></div>${t.d?`<div class="r"><span>Discount</span><b>−${money(t.d)}</b></div>`:''}<div class="r"><span>Delivery</span><b>${money(+O.delivery||0)}</b></div><div class="r" style="font-size:18px;border-top:1px solid var(--line);padding-top:8px;margin-top:6px"><span>Total</span><b>${money(t.t)}</b></div><div class="r" style="color:var(--sale)"><span>Due</span><b>${money(t.due)}</b></div>`;};
+  const line=(it,k)=>{const p=prod(it.slug);const vs=p?.variants||[];return `<tr>
+    <td style="min-width:220px"><select class="input" data-li="${k}" data-lf="slug"><option value="">Select product…</option>${S.products.map(x=>`<option value="${x.slug}" ${x.slug===it.slug?'selected':''}>${esc(x.name)} — ${esc(bname(x.brand))}</option>`).join('')}</select></td>
+    <td style="min-width:150px"><select class="input" data-li="${k}" data-lf="model" ${p?'':'disabled'}><option value="">Model…</option>${(p?.models||[]).map(m=>`<option ${m===it.model?'selected':''}>${esc(m)}</option>`).join('')}</select></td>
+    <td style="min-width:140px"><select class="input" data-li="${k}" data-lf="color" ${p?'':'disabled'}>${vs.map(v=>`<option value="${esc(v.name)}" ${v.name===it.color?'selected':''} ${qtyOf(v)<=0?'disabled':''}>${esc(v.name)} (${qtyOf(v)})</option>`).join('')}</select></td>
+    <td style="width:80px"><input class="input" type="number" min="1" data-li="${k}" data-lf="qty" value="${it.qty}"></td>
+    <td style="width:110px"><input class="input" type="number" min="0" data-li="${k}" data-lf="price" value="${it.price}"></td>
+    <td style="width:100px;text-align:right"><b data-lt="${k}">${money((+it.price||0)*(+it.qty||0))}</b></td>
+    <td><button class="btn ghost sm" data-lx="${k}" title="Remove">✕</button></td></tr>`;};
+  const draw=()=>{
+    const c=O.customer;
+    $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Sales</span><h1>New order</h1></div><button class="btn ghost sm" id="reset">Clear form</button></div>
+    <p class="hint" style="margin:-10px 0 18px">Add an order you received by phone, Facebook or in person. Stock is reduced when status is Confirmed or later. After saving you can download the invoice as PDF and send it to the customer.</p>
+    <div class="panel"><h3>Customer & delivery location</h3>
+      <div class="g3"><div class="fld"><label>Customer name</label><input class="input" data-c="name" value="${esc(c.name)}"></div>
+        <div class="fld"><label>Mobile number</label><input class="input" data-c="phone" type="tel" placeholder="01XXXXXXXXX" value="${esc(c.phone)}" list="custlist"><datalist id="custlist">${S.customers.map(x=>`<option value="${esc(x.phone)}">${esc(x.name)}</option>`).join('')}</datalist></div>
+        <div class="fld"><label>Delivery area</label><select class="input" data-c="area"><option value="inside" ${c.area!=='outside'?'selected':''}>Inside Dhaka (${money(set.deliveryInside)})</option><option value="outside" ${c.area==='outside'?'selected':''}>Outside Dhaka (${money(set.deliveryOutside)})</option></select></div></div>
+      <div class="g3"><div class="fld"><label>District / City</label><input class="input" data-c="district" list="dlist" value="${esc(c.district)}"><datalist id="dlist">${DISTRICTS.map(d=>`<option value="${esc(d)}">`).join('')}</datalist></div>
+        <div class="fld"><label>Thana / Area</label><input class="input" data-c="thana" placeholder="e.g. Mohammadpur" value="${esc(c.thana)}"></div>
+        <div class="fld"><label>Note <small>(optional)</small></label><input class="input" data-c="note" value="${esc(c.note)}"></div></div>
+      <div class="fld"><label>Full address</label><textarea class="input" rows="2" data-c="address" placeholder="House, road, block, landmark">${esc(c.address)}</textarea></div>
+    </div>
+    <div class="panel"><h3>Products</h3>
+      <div style="overflow:auto"><table><thead><tr><th>Product</th><th>Model</th><th>Colour (stock)</th><th>Qty</th><th>Unit price</th><th style="text-align:right">Total</th><th></th></tr></thead><tbody id="lines">${O.items.map(line).join('')||''}</tbody></table></div>
+      ${O.items.length?'':'<p class="muted" style="padding:8px 0">No products yet.</p>'}
+      <button class="btn ghost sm" id="addl" style="margin-top:12px">+ Add product</button>
+    </div>
+    <div class="g2">
+      <div class="panel"><h3>Payment</h3><div class="g2">
+        <div class="fld"><label>Delivery charge (৳)</label><input class="input" type="number" min="0" data-o="delivery" value="${O.delivery}"></div>
+        <div class="fld"><label>Discount (৳)</label><input class="input" type="number" min="0" data-o="discount" value="${O.discount}"></div>
+        <div class="fld"><label>Payment method</label><select class="input" data-o="payment">${['Cash on delivery','bKash','Nagad','Rocket','Bank transfer','Cash (paid in shop)'].map(m=>`<option ${O.payment===m?'selected':''}>${m}</option>`).join('')}</select></div>
+        <div class="fld"><label>Advance paid (৳)</label><input class="input" type="number" min="0" data-o="paid" value="${O.paid}"></div>
+        <div class="fld"><label>Order status</label><select class="input" data-o="status">${STAT.map(x=>`<option ${O.status===x?'selected':''}>${x}</option>`).join('')}</select></div></div></div>
+      <div class="panel"><h3>Summary</h3><div id="tot" style="display:flex;flex-direction:column;gap:6px;font-size:15px"></div>
+        <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"><button class="btn gold" id="saveo" data-inv="1">${IC.pdf} Save & create invoice</button><button class="btn ghost" id="saveo2">Save order</button></div></div>
+    </div>`;
+    drawTotals();
+  };
+  const css=document.getElementById('nost')||Object.assign(document.head.appendChild(document.createElement('style')),{id:'nost'});css.textContent='#tot .r{display:flex;justify-content:space-between}';
+  draw();
+  const v=$('#view');
+  v.oninput=e=>{const t=e.target;
+    if(t.dataset.c){O.customer[t.dataset.c]=t.value;}
+    if(t.dataset.o&&t.tagName==='INPUT'){O[t.dataset.o]=+t.value||0;if(t.dataset.o==='delivery')O.deliveryTouched=true;drawTotals();}
+    if(t.dataset.lf==='qty'||t.dataset.lf==='price'){const it=O.items[t.dataset.li];it[t.dataset.lf]=+t.value||0;v.querySelector(`[data-lt="${t.dataset.li}"]`).textContent=money(it.price*it.qty);drawTotals();}
+    if(t.dataset.c==='phone'){const cu=S.customers.find(x=>x.phone===t.value.replace(/\D/g,''));if(cu&&!O.customer.name){Object.assign(O.customer,{name:cu.name,address:cu.address||'',area:cu.area||'inside'});draw();flash('Customer details filled');}}};
+  v.onchange=e=>{const t=e.target;
+    if(t.dataset.c==='area'){O.customer.area=t.value;if(!O.deliveryTouched){O.delivery=+(t.value==='outside'?set.deliveryOutside:set.deliveryInside)||0;}draw();}
+    if(t.dataset.o&&t.tagName==='SELECT')O[t.dataset.o]=t.value;
+    if(t.dataset.lf==='slug'){const p=prod(t.value),it=O.items[t.dataset.li];Object.assign(it,{slug:t.value,name:p?.name||'',model:'',color:p?.variants.find(x=>qtyOf(x)>0)?.name||p?.variants[0]?.name||'',price:p?priceInfo(p).final:0});draw();}
+    if(t.dataset.lf==='model'||t.dataset.lf==='color'){O.items[t.dataset.li][t.dataset.lf]=t.value;}};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='addl'){O.items.push({slug:'',name:'',model:'',color:'',qty:1,price:0});draw();}
+    if(b.dataset.lx){O.items.splice(+b.dataset.lx,1);draw();}
+    if(b.id==='reset'&&confirm('Clear this order form?')){S.draft=null;neworder();}
+    if(b.id==='saveo'||b.id==='saveo2'){
+      if(!O.customer.name.trim())return flash('Enter customer name');
+      if(!O.items.length||O.items.some(i=>!i.slug))return flash('Select a product for every line');
+      if(O.items.some(i=>!i.model))return flash('Select the phone model for every product');
+      for(const i of O.items){const v2=prod(i.slug)?.variants.find(x=>x.name===i.color);if(['confirmed','shipped','delivered'].includes(O.status)&&v2&&i.qty>qtyOf(v2))return flash(`Only ${qtyOf(v2)} ${i.color} left for ${i.name}`);}
+      b.disabled=true;
+      try{const o=await api('/api/admin/orders',{method:'POST',body:JSON.stringify(O)});S.orders.unshift(o);S.products=await api('/api/admin/products');S.draft=null;flash(`Order ${o.no} saved ✓`);
+        if(b.dataset.inv)location.href='/invoice?id='+o.id;else{S.tab='orders';history.replaceState(null,'','#orders');render();}}
+      catch(er){flash(er.message);b.disabled=false;}}};
+}
+// ---------- products ----------
+const blankProduct=()=>({name:'',brand:S.site.brands[0]?.id,categories:[],price:0,discount:{type:'percent',value:0,endsAt:''},badge:'',description:'',features:[],models:[],variants:[{name:'Black',hex:'#1c1c1c',images:[],qty:10}],featured:false,isNew:true,active:true});
+function productList(){
+  const st={q:'',cat:'',brand:''};
+  $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Catalogue</span><h1>Products & stock</h1></div><button class="btn" id="new">+ Add product</button></div><p class="hint" style="margin:-12px 0 16px">Tip: use <b>Price & stock</b> to quickly update price, discount and stock without opening the full editor.</p>
+  <div class="panel"><div class="g3" style="margin-bottom:10px"><input class="input" id="flt" placeholder="Search products…"><select class="input" id="fc"><option value="">All categories</option>${S.site.categories.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select><select class="input" id="fbr"><option value="">All devices</option>${S.site.brands.map(b=>`<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select></div>
+  <div style="overflow:auto"><table><thead><tr><th></th><th>Product</th><th class="hide-m">Categories</th><th>Price</th><th class="hide-m">Colours</th><th>Stock</th><th class="hide-m">Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></div>`;
+  const rows=()=>$('#rows').innerHTML=S.products.filter(p=>p.name.toLowerCase().includes(st.q)&&(!st.cat||p.categories?.includes(st.cat))&&(!st.brand||p.brand===st.brand)).map(p=>{const pi=priceInfo(p);return `<tr>
+    <td><img src="${esc(p.variants[0]?.images[0]||(S.site?.settings.logo||'/img/logo.png'))}" alt=""></td><td><b>${esc(p.name)}</b><br><small class="muted">${esc(bname(p.brand))}${p.featured?' · ★ Featured':''}${p.isNew?' · New':''}</small></td>
+    <td class="hide-m">${(p.categories||[]).map(c=>`<span class="st" style="margin:2px">${esc(cname(c))}</span>`).join('')||'<span class="muted">—</span>'}</td>
+    <td>${pi.off?`<b style="color:var(--sale)">${money(pi.final)}</b><br><s class="muted">${money(pi.regular)}</s>`:money(pi.final)}</td>
+    <td class="hide-m"><div class="sw">${p.variants.map(v=>`<i title="${esc(v.name)}: ${qtyOf(v)}" style="background:${esc(v.hex)};${qtyOf(v)<=0?'opacity:.3':''}"></i>`).join('')}</div><small class="muted">${p.models.length} models</small></td><td>${stockLabel(totalStock(p))}</td>
+    <td class="hide-m"><span class="st ${p.active!==false?'live':'hidden'}">${p.active!==false?'Live':'Hidden'}</span></td>
+    <td style="white-space:nowrap"><button class="btn sm" data-q="${p.id}" title="Quick edit price & stock">Price & stock</button> <button class="btn ghost sm" data-e="${p.id}">Edit</button> <button class="btn ghost sm" data-dup="${p.id}" title="Duplicate">⧉</button> <button class="btn ghost sm" data-d="${p.id}" title="Delete">✕</button></td></tr>`;}).join('')||'<tr><td colspan="8" class="muted">No products match.</td></tr>';
+  rows();$('#flt').oninput=e=>{st.q=e.target.value.toLowerCase();rows();};$('#fc').onchange=e=>{st.cat=e.target.value;rows();};$('#fbr').onchange=e=>{st.brand=e.target.value;rows();};
+  $('#new').onclick=()=>{S.edit=blankProduct();render();};
+  $('#rows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.e){S.edit=structuredClone(S.products.find(p=>p.id===b.dataset.e));render();}
+    if(b.dataset.q){const tr=b.closest('tr');const nx=tr.nextElementSibling;if(nx?.classList.contains('qe')){nx.remove();return;}
+      const p=structuredClone(S.products.find(x=>x.id===b.dataset.q));
+      tr.insertAdjacentHTML('afterend',`<tr class="qe"><td colspan="8" style="background:#FBFAF7"><div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+        <label style="font-size:12.5px">Regular price (৳)<input class="input" type="number" min="0" data-qp value="${p.price}" style="width:110px"></label>
+        <label style="font-size:12.5px">Discount<span style="display:flex;gap:4px"><input class="input" type="number" min="0" data-qd value="${p.discount?.value||0}" style="width:80px"><select class="input" data-qt style="width:84px"><option value="percent" ${p.discount?.type!=='flat'?'selected':''}>%</option><option value="flat" ${p.discount?.type==='flat'?'selected':''}>৳</option></select></span></label>
+        ${p.variants.map((v,i)=>`<label style="font-size:12.5px;display:flex;flex-direction:column"><span><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${esc(v.hex)};margin-right:4px"></i>${esc(v.name)}</span><input class="input" type="number" min="0" data-qv="${i}" value="${qtyOf(v)}" style="width:84px"></label>`).join('')}
+        <button class="btn sm" data-qs="${p.id}">Save</button><button class="btn ghost sm" data-qc>Cancel</button></div></td></tr>`);}
+    if(b.dataset.qc)b.closest('tr').remove();
+    if(b.dataset.qs){const row=b.closest('tr'),p=structuredClone(S.products.find(x=>x.id===b.dataset.qs));
+      p.price=+row.querySelector('[data-qp]').value||0;p.discount={...(p.discount||{}),value:+row.querySelector('[data-qd]').value||0,type:row.querySelector('[data-qt]').value};
+      row.querySelectorAll('[data-qv]').forEach(inp=>p.variants[+inp.dataset.qv].qty=Math.max(0,parseInt(inp.value)||0));
+      try{const saved=await api('/api/admin/products/'+p.id,{method:'PUT',body:JSON.stringify(p)});S.products[S.products.findIndex(x=>x.id===p.id)]=saved;rows();flash('Price & stock saved ✓');}catch(er){flash(er.message);}}
+    if(b.dataset.dup){const c=structuredClone(S.products.find(p=>p.id===b.dataset.dup));delete c.id;delete c.slug;c.name+=' (copy)';c.active=false;S.edit=c;render();flash('Copy created — edit and save');}
+    if(b.dataset.d&&confirm('Delete this product permanently?')){await api('/api/admin/products/'+b.dataset.d,{method:'DELETE'});S.products=S.products.filter(p=>p.id!==b.dataset.d);flash('Deleted');rows();}};
+}
+function editor(){
+  const p=S.edit;p.discount=p.discount||{type:'percent',value:0,endsAt:''};p.categories=p.categories||[];
+  const brand=S.site.brands.find(b=>b.id===p.brand)||{models:[]};
+  $('#view').innerHTML=`<div class="top"><div><button class="link" id="back" style="background:none;border:none;border-bottom:1px solid">← All products</button><h1 style="margin-top:8px">${p.id?'Edit product':'New product'}</h1></div>${p.slug?`<a class="btn ghost sm" href="/product/${p.slug}" target="_blank">${IC.eye} View on site</a>`:''}</div>
+  <div class="panel"><h3>Basic info</h3>
+    <div class="g2"><div class="fld"><label>Product name</label><input class="input" data-k="name" value="${esc(p.name)}" placeholder="e.g. Frosted MagSafe Case"></div>
+      <div class="fld"><label>Badge <small>(optional — e.g. Best Seller)</small></label><input class="input" data-k="badge" value="${esc(p.badge)}"></div></div>
+    <div class="fld"><label>Description</label><textarea class="input" rows="3" data-k="description">${esc(p.description)}</textarea></div>
+    <div class="fld"><label>Features <small>(one per line)</small></label><textarea class="input" rows="4" data-k="features">${esc(p.features.join('\n'))}</textarea></div>
+    <div style="display:flex;gap:26px;flex-wrap:wrap" class="ckl"><label><input type="checkbox" data-c="active" ${p.active!==false?'checked':''}> Visible on website</label><label><input type="checkbox" data-c="featured" ${p.featured?'checked':''}> Best seller (home page)</label><label><input type="checkbox" data-c="isNew" ${p.isNew?'checked':''}> New arrival</label></div>
+  </div>
+  <div class="panel"><h3>Price & discount</h3><div class="g4">
+    <div class="fld"><label>Regular price (৳)</label><input class="input" type="number" min="0" data-k="price" value="${p.price}"></div>
+    <div class="fld"><label>Discount type</label><select class="input" data-dk="type"><option value="percent" ${p.discount.type!=='flat'?'selected':''}>Percent (%)</option><option value="flat" ${p.discount.type==='flat'?'selected':''}>Flat amount (৳)</option></select></div>
+    <div class="fld"><label>Discount <small>(0 = none)</small></label><input class="input" type="number" min="0" data-dk="value" value="${p.discount.value||0}"></div>
+    <div class="fld"><label>Discount ends <small>(optional)</small></label><input class="input" type="date" data-dk="endsAt" value="${esc(p.discount.endsAt||'')}"></div></div>
+    <div id="finalp" style="background:var(--ivory);border-radius:12px;padding:12px 16px;font-size:15px"></div></div>
+  <div class="panel"><h3>Organise</h3>
+    <div class="g2"><div class="fld"><label>Device</label><select class="input" data-k="brand">${S.site.brands.map(b=>`<option value="${b.id}" ${b.id===p.brand?'selected':''}>${esc(b.name)}</option>`).join('')}</select></div><div></div></div>
+    <div class="fld"><label>Designs / categories <small>(choose one or more)</small></label><div class="boxes" id="pcats">${S.site.categories.map(c=>`<label><input type="checkbox" value="${c.id}" ${p.categories.includes(c.id)?'checked':''}> ${esc(c.name)}</label>`).join('')||'<span class="muted">Create categories first</span>'}</div></div>
+    <div class="fld"><label>Show on these phone models <small>(the product appears only on the models you tick)</small> <button class="btn ghost sm" type="button" id="all" style="margin-left:8px;padding:4px 12px">Select all</button> <button class="btn ghost sm" type="button" id="none" style="padding:4px 12px">Clear</button></label>
+      <div class="boxes" id="pmodels">${[...modelsOf(brand)].reverse().map(m=>`<label><input type="checkbox" value="${esc(m.name)}" ${p.models.includes(m.name)?'checked':''}> ${esc(m.name)}</label>`).join('')}</div></div></div>
+  <div class="panel"><h3>Colours & photos</h3><p class="hint">Set the stock quantity for each colour — 0 shows “Sold out”. First photo of the first colour is the main image; use ← to reorder photos.</p><div id="vars">${p.variants.map((v,i)=>`<div class="card2"><div class="vrow">
+      <input class="input" data-vn="${i}" value="${esc(v.name)}" placeholder="Colour name"><input type="color" data-vh="${i}" value="${esc(v.hex)}" style="width:64px;height:46px;border:1px solid var(--line);border-radius:12px;padding:3px;background:#fff" aria-label="Colour">
+      <label style="font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:6px">Stock <input class="input" type="number" min="0" data-vq="${i}" value="${qtyOf(v)}" style="width:84px;height:40px"></label><button class="btn ghost sm" type="button" data-vd="${i}">Remove</button></div>
+      <div class="imgs">${v.images.map((src,j)=>`<div class="im"><img src="${esc(src)}" alt="">${j?`<button class="mv" type="button" data-mi="${i}" data-mj="${j}" title="Move left">←</button>`:''}<button class="x" type="button" data-xi="${i}" data-xj="${j}" title="Remove">✕</button></div>`).join('')}
+      <label class="up" title="Upload photos">+<input type="file" accept="image/*" multiple hidden data-up="${i}"></label></div></div>`).join('')}</div>
+    <button class="btn ghost sm" id="addv" type="button">+ Add colour</button>
+    <div class="sticky-save"><button class="btn ghost" id="cancel">Cancel</button><button class="btn" id="save">Save product</button></div></div>`;
+  const v=$('#view');
+  const showFinal=()=>{const pi=priceInfo({...p,price:+p.price});$('#finalp').innerHTML=pi.off?`Customer pays <b style="color:var(--sale)">${money(pi.final)}</b> <s class="muted">${money(pi.regular)}</s> — saves ${money(pi.saved)} (${pi.off}% off)`:`Customer pays <b>${money(pi.final)}</b>${p.discount.value>0?' <span class="muted">(discount expired)</span>':''}`;};showFinal();
+  v.oninput=e=>{const t=e.target;
+    if(t.dataset.k&&t.dataset.k!=='brand')p[t.dataset.k]=t.dataset.k==='features'?t.value.split('\n'):t.value;
+    if(t.dataset.dk)p.discount[t.dataset.dk]=t.dataset.dk==='value'?+t.value:t.value;
+    if(t.dataset.vn)p.variants[t.dataset.vn].name=t.value;if(t.dataset.vh)p.variants[t.dataset.vh].hex=t.value;if(t.dataset.vq)p.variants[t.dataset.vq].qty=Math.max(0,parseInt(t.value)||0);
+    if(t.dataset.dk||t.dataset.k==='price')showFinal();};
+  v.onchange=async e=>{const t=e.target;
+    if(t.dataset.k==='brand'){p.brand=t.value;p.models=[];editor();return;}
+    if(t.dataset.c)p[t.dataset.c]=t.checked;if(t.dataset.vs)p.variants[t.dataset.vs].stock=t.checked;
+    if(t.closest('#pmodels'))p.models=$$('#pmodels input:checked').map(x=>x.value);
+    if(t.closest('#pcats'))p.categories=$$('#pcats input:checked').map(x=>x.value);
+    if(t.dataset.up&&t.files.length){flash('Uploading…');try{p.variants[t.dataset.up].images.push(...await uploadFiles(t.files));editor();flash('Photos added');}catch(er){flash(er.message);}}};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='back'||b.id==='cancel'){if(b.id==='cancel'||confirm('Leave without saving?')){S.edit=null;render();}}
+    if(b.id==='all'){p.models=modelsOf(brand).map(m=>m.name);editor();}if(b.id==='none'){p.models=[];editor();}
+    if(b.id==='addv'){p.variants.push({name:'',hex:'#cccccc',images:[],qty:0});editor();}
+    if(b.dataset.vd){if(p.variants.length===1)return flash('A product needs at least one colour');p.variants.splice(+b.dataset.vd,1);editor();}
+    if(b.dataset.xi){p.variants[b.dataset.xi].images.splice(+b.dataset.xj,1);editor();}
+    if(b.dataset.mi){const a=p.variants[b.dataset.mi].images,j=+b.dataset.mj;[a[j-1],a[j]]=[a[j],a[j-1]];editor();}
+    if(b.id==='save'){
+      if(!p.name.trim())return flash('Please enter a product name');if(!(+p.price>0))return flash('Please enter a price');if(!p.models.length){$('#pmodels').scrollIntoView({block:'center',behavior:'smooth'});return flash('Select at least one phone model — the product shows only on those models');}
+      p.features=p.features.map(s=>s.trim()).filter(Boolean);b.disabled=true;
+      try{const saved=await api('/api/admin/products'+(p.id?'/'+p.id:''),{method:p.id?'PUT':'POST',body:JSON.stringify(p)});
+        const i=S.products.findIndex(x=>x.id===saved.id);i<0?S.products.unshift(saved):S.products[i]=saved;S.edit=null;flash('Product saved ✓');render();}catch(er){flash(er.message);b.disabled=false;}}};
+}
+// ---------- generic list editor (categories / banners / coupons) ----------
+function listEditor(key,o){
+  const L=S.site[key]=structuredClone(S.site[key]||[]);
+  const redraw=()=>{
+    $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">${o.eyebrow}</span><h1>${o.title}</h1></div><button class="btn" id="add">+ Add ${o.single}</button></div>
+    <div class="panel"><p class="hint" style="margin:0 0 16px">${o.help}</p>
+    ${L.map((it,i)=>`<div class="card2"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px"><b>${esc(o.label(it))||'Untitled'}</b>${o.meta?`<span class="muted" style="font-size:13px">${o.meta(it)}</span>`:''}
+      <div style="display:flex;gap:6px;margin-left:auto"><button class="btn ghost sm" data-up="${i}" ${i?'':'disabled'} title="Move up">↑</button><button class="btn ghost sm" data-dn="${i}" ${i<L.length-1?'':'disabled'} title="Move down">↓</button><button class="btn ghost sm" data-rm="${i}">Delete</button></div></div>
+      <div class="${o.cols||'g3'}">${o.fields.map(f=>`<div class="fld" ${f.wide?'style="grid-column:1/-1"':''}><label>${f.l}</label>${
+        f.t==='img'?imgPick(i+':'+f.k,it[f.k]):f.t==='select'?`<select class="input" data-i="${i}" data-f="${f.k}">${f.o.map(([v,l])=>`<option value="${v}" ${it[f.k]===v?'selected':''}>${l}</option>`).join('')}</select>`:
+        f.t==='note'?'':f.t==='check'?`<label class="ckl" style="font-weight:400;display:flex;gap:8px;align-items:center;height:46px"><input type="checkbox" data-i="${i}" data-f="${f.k}" ${it[f.k]!==false?'checked':''}> ${f.cl||'Yes'}</label>`:
+        f.t==='area'?`<textarea class="input" rows="2" data-i="${i}" data-f="${f.k}">${esc(it[f.k]??'')}</textarea>`:
+        `<input class="input" type="${f.t||'text'}" data-i="${i}" data-f="${f.k}" value="${esc(it[f.k]??'')}" ${f.ph?`placeholder="${f.ph}"`:''}>`}</div>`).join('')}</div></div>`).join('')||`<p class="muted" style="padding:20px 0">Nothing here yet — click “Add ${o.single}”.</p>`}
+    <div class="sticky-save"><button class="btn" id="savel">Save changes</button></div></div>`;
+  };
+  redraw();
+  const v=$('#view');
+  v.oninput=e=>{const t=e.target;if(t.dataset.f&&t.type!=='checkbox')L[t.dataset.i][t.dataset.f]=t.value;};
+  v.onchange=async e=>{const t=e.target;
+    if(t.dataset.f&&t.type==='checkbox')L[t.dataset.i][t.dataset.f]=t.checked;
+    if(t.dataset.img&&t.files[0]){const [i,k]=t.dataset.img.split(':');flash('Uploading…');try{const [u]=await uploadFiles([t.files[0]]);L[i][k]=u;redraw();flash('Photo added — click Save');}catch(er){flash(er.message);}}};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='add'){L.push(o.blank());redraw();v.querySelector('.card2:last-of-type')?.scrollIntoView({behavior:'smooth',block:'center'});}
+    if(b.dataset.clearimg){const [i,k]=b.dataset.clearimg.split(':');L[i][k]='';redraw();}
+    if(b.dataset.rm){const it=L[+b.dataset.rm];if(o.canDelete&&!o.canDelete(it))return;if(confirm('Delete this '+o.single+'?')){L.splice(+b.dataset.rm,1);redraw();}}
+    if(b.dataset.up){const i=+b.dataset.up;[L[i-1],L[i]]=[L[i],L[i-1]];redraw();}
+    if(b.dataset.dn){const i=+b.dataset.dn;[L[i+1],L[i]]=[L[i],L[i+1]];redraw();}
+    if(b.id==='savel'){if(o.validate){const err=o.validate(L);if(err)return flash(err);}try{await saveSite({[key]:L});listEditor(key,o);}catch(er){flash(er.message);}}};
+}
+function categories(){
+  const used=id=>S.products.filter(p=>p.categories?.includes(id)).length;
+  listEditor('categories',{eyebrow:'Catalogue',title:'Designs (categories)',single:'design',cols:'g2',
+    help:'Designs are case styles (MagSafe, Leather…). They appear in the “Designs” menu, on each phone model page and as filters. Add as many as you like — menus grow automatically. Use ↑ ↓ to set the order.',
+    label:c=>c.name,meta:c=>c.id?`${used(c.id)} products · /category/${c.id}`:'new',
+    fields:[{k:'name',l:'Category name',ph:'e.g. Leather'},{k:'image',l:'Photo',t:'img'},{k:'description',l:'Short description',t:'area',wide:true},{k:'active',l:'Visibility',t:'check',cl:'Show on website'}],
+    blank:()=>({name:'',description:'',image:'',active:true}),
+    canDelete:c=>{if(c.id&&used(c.id)){flash(`Remove ${used(c.id)} products from this category first`);return false;}return true;},
+    validate:L=>L.some(c=>!String(c.name).trim())?'Every category needs a name':''});
+}
+function banners(){listEditor('banners',{eyebrow:'Home page',title:'Home banners',single:'banner',cols:'g2',
+  help:'Slides at the top of the home page (change every 6 seconds). <b>Photo banner</b>: one big photo with text on it. <b>Brand card</b>: white card with heading + tie-phone icon and up to 5 phone photos beside it. Tip: PNG photos with transparent background look like floating phones.',
+  label:b=>(b.style==='brand'?'[Brand card] ':'[Photo] ')+b.title.replace(/\*/g,''),
+  fields:[{k:'style',l:'Banner style',t:'select',o:[['photo','Photo banner (big photo, text on top)'],['brand','Brand card (white card + phone photos)']]},{k:'active',l:'Visibility',t:'check',cl:'Show on home page'},{k:'title',l:'Heading',ph:'Unwrap Elegance.'},{k:'subtitle',l:'Sub heading',ph:'Protect Your iPhone with Cravat Cases.'},{k:'smallText',l:'Small text (brand card)',ph:'Imported Designs. Quality Guaranteed.'},{k:'eyebrow',l:'Small tag (photo banner)'},{k:'buttonText',l:'Button text',ph:'Shop Now'},{k:'buttonLink',l:'Button link',ph:'/shop'},{k:'showIcon',l:'Tie-phone icon (brand card)',t:'check',cl:'Show icon next to heading'},{k:'_',l:'',t:'note'},{k:'image',l:'Photo 1',t:'img'},{k:'image2',l:'Photo 2',t:'img'},{k:'image3',l:'Photo 3 (brand card)',t:'img'},{k:'image4',l:'Photo 4 (brand card)',t:'img'},{k:'image5',l:'Photo 5 (brand card, desktop only)',t:'img'}],
+  blank:()=>({style:'photo',title:'New banner',eyebrow:'',subtitle:'',smallText:'',image:'',image2:'',buttonText:'Shop now',buttonLink:'/shop',showIcon:true,active:true})});}
+function coupons(){listEditor('coupons',{eyebrow:'Marketing',title:'Coupons',single:'coupon',cols:'g3',
+  help:'Customers type the code in their cart. The discount is shown in the WhatsApp order message.',
+  label:c=>c.code,meta:c=>c.value?(c.type==='percent'?c.value+'% off':'৳'+c.value+' off')+(c.minOrder?` · min ৳${c.minOrder}`:''):'',
+  fields:[{k:'code',l:'Code',ph:'EID20'},{k:'type',l:'Type',t:'select',o:[['percent','Percent (%)'],['flat','Flat amount (৳)']]},{k:'value',l:'Value',t:'number'},{k:'minOrder',l:'Minimum order (৳)',t:'number'},{k:'endsAt',l:'Expires on',t:'date'},{k:'active',l:'Status',t:'check',cl:'Active'}],
+  blank:()=>({code:'',type:'percent',value:10,minOrder:0,endsAt:'',active:true}),validate:L=>L.some(c=>!String(c.code).trim())?'Every coupon needs a code':''});}
+function brands(){
+  const B=S.site.brands=structuredClone(S.site.brands);B.forEach(b=>b.models=modelsOf(b));
+  const used=n=>S.products.filter(p=>p.models.includes(n)).length;
+  const redraw=()=>{$('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Catalogue</span><h1>Phones & models</h1></div><button class="btn" id="addb">+ Add brand</button></div>
+   <p class="hint" style="margin:-10px 0 18px">Each model gets its own page (e.g. /phone/iphone-15-pro) and tile on the home page. Upload a photo of the phone, or leave empty to use the built-in illustration. Newest models should be at the bottom.</p>
+   ${B.map((b,i)=>`<div class="panel"><div class="g3"><div class="fld"><label>Brand name</label><input class="input" data-bn="${i}" value="${esc(b.name)}"></div><div class="fld"><label>Link ID <small>(letters only)</small></label><input class="input" data-bi="${i}" value="${esc(b.id)}" ${S.products.some(p=>p.brand===b.id)?'readonly title="Used by products"':''}></div><div class="fld"><label>Tagline</label><input class="input" data-bt="${i}" value="${esc(b.tagline||'')}"></div></div>
+   <div class="fld"><label>Brand photo <small>(menu banner)</small></label>${imgPick('b:'+i,b.image)}</div>
+   <h3 style="margin-top:18px">${esc(b.name)} models (${b.models.length})</h3>
+   <div style="overflow:auto"><table><thead><tr><th style="width:84px">Photo</th><th>Model name</th><th class="hide-m">Cases</th><th>Visible</th><th></th></tr></thead><tbody>${b.models.map((m,j)=>`<tr>
+     <td><label style="cursor:pointer;display:block;width:64px;height:64px;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:var(--ivory);display:grid;place-items:center" title="Upload photo">${m.image?`<img src="${esc(m.image)}" style="width:100%;height:100%;object-fit:cover" alt="">`:phoneArt(m.name,b.id).replace('<svg','<svg style="height:56px"')}<input type="file" accept="image/*" hidden data-mimg="${i}:${j}"></label></td>
+     <td><input class="input" data-mn="${i}:${j}" value="${esc(m.name)}">${m.image?`<button class="link" style="background:none;border:none;border-bottom:1px solid;font-size:12px;margin-top:4px" data-mclr="${i}:${j}">Use illustration</button>`:''}</td>
+     <td class="hide-m">${used(m.name)}</td><td><input type="checkbox" data-ma="${i}:${j}" ${m.active!==false?'checked':''} style="accent-color:var(--navy);width:18px;height:18px"></td>
+     <td style="white-space:nowrap"><button class="btn ghost sm" data-mu="${i}:${j}" ${j?'':'disabled'}>↑</button> <button class="btn ghost sm" data-md="${i}:${j}" ${j<b.models.length-1?'':'disabled'}>↓</button> <button class="btn ghost sm" data-mx="${i}:${j}">✕</button></td></tr>`).join('')}</tbody></table></div>
+   <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><input class="input" style="max-width:260px" placeholder="New model name, e.g. iPhone 19 Pro" data-newm="${i}"><button class="btn ghost sm" data-addm="${i}">+ Add model</button>
+   ${S.products.some(p=>p.brand===b.id)?'':`<button class="btn ghost sm" data-bd="${i}" style="margin-left:auto">Delete brand</button>`}</div></div>`).join('')}
+   <div class="panel" style="position:sticky;bottom:10px;display:flex;justify-content:flex-end;padding:14px 20px"><button class="btn" id="saveb">Save changes</button></div>`;};
+  redraw();const v=$('#view');const ij=k=>k.split(':').map(Number);
+  v.oninput=e=>{const t=e.target;if(t.dataset.bn)B[t.dataset.bn].name=t.value;if(t.dataset.bt)B[t.dataset.bt].tagline=t.value;if(t.dataset.bi)B[t.dataset.bi].id=t.value.toLowerCase().replace(/[^a-z0-9-]/g,'');
+    if(t.dataset.mn){const [i,j]=ij(t.dataset.mn);B[i].models[j].name=t.value;}};
+  v.onchange=async e=>{const t=e.target;
+    if(t.dataset.ma){const [i,j]=ij(t.dataset.ma);B[i].models[j].active=t.checked;}
+    if(t.dataset.mn){const [i,j]=ij(t.dataset.mn);const old=S.site.brands[i]?.models?.[j];if(old&&modelsOf({models:[old]})[0].name!==t.value&&used(modelsOf({models:[old]})[0].name))flash('Tip: products using the old name keep it — update them too');}
+    if(t.dataset.mimg&&t.files[0]){const [i,j]=ij(t.dataset.mimg);flash('Uploading…');const [u]=await uploadFiles([t.files[0]]);B[i].models[j].image=u;redraw();flash('Photo added — click Save');}
+    if(t.dataset.img&&t.files[0]){const [u]=await uploadFiles([t.files[0]]);B[+t.dataset.img.split(':')[1]].image=u;redraw();flash('Photo added — click Save');}};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='addb'){B.push({id:'brand'+B.length,name:'New brand',tagline:'',models:[],image:''});redraw();}
+    if(b.dataset.clearimg){B[+b.dataset.clearimg.split(':')[1]].image='';redraw();}
+    if(b.dataset.mclr){const [i,j]=ij(b.dataset.mclr);B[i].models[j].image='';redraw();}
+    if(b.dataset.mu){const [i,j]=ij(b.dataset.mu);const a=B[i].models;[a[j-1],a[j]]=[a[j],a[j-1]];redraw();}
+    if(b.dataset.md){const [i,j]=ij(b.dataset.md);const a=B[i].models;[a[j+1],a[j]]=[a[j],a[j+1]];redraw();}
+    if(b.dataset.mx){const [i,j]=ij(b.dataset.mx);const n=B[i].models[j].name;if(confirm(`Remove ${n}?${used(n)?` ${used(n)} products list this model.`:''}`)){B[i].models.splice(j,1);redraw();}}
+    if(b.dataset.addm){const i=+b.dataset.addm,inp=v.querySelector(`[data-newm="${i}"]`),n=inp.value.trim();if(!n)return flash('Type a model name');if(B[i].models.some(m=>m.name.toLowerCase()===n.toLowerCase()))return flash('Model already exists');B[i].models.push({name:n,image:'',active:true});redraw();flash('Added — click Save');}
+    if(b.dataset.bd&&confirm('Delete brand?')){B.splice(+b.dataset.bd,1);redraw();}
+    if(b.id==='saveb'){if(new Set(B.map(x=>x.id)).size!==B.length)return flash('Brand IDs must be unique');await saveSite({brands:B});brands();}};
+}
+function customers(){
+  const draw=q=>$('#crows').innerHTML=S.customers.filter(c=>(c.name+c.phone+(c.email||'')).toLowerCase().includes(q)).map(c=>`<tr><td><b>${esc(c.name)}</b><br><small class="muted">Joined ${new Date(c.createdAt).toLocaleDateString('en-GB')}</small></td><td>${esc(c.phone)}${c.email?`<br><small class="muted">${esc(c.email)}</small>`:''}</td><td class="hide-m">${esc(c.address||'—')}<br><small class="muted">${c.area==='outside'?'Outside':'Inside'} Dhaka</small></td><td>${c.orders}</td>
+    <td style="white-space:nowrap"><a class="btn wa sm" target="_blank" rel="noopener" href="https://wa.me/88${esc(c.phone)}">WhatsApp</a> <button class="btn ghost sm" data-cx="${c.id}" title="Delete account">✕</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">No customers yet. Customers appear here when they register on the website.</td></tr>';
+  $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">People</span><h1>Customers</h1></div></div>
+  <div class="panel"><input class="input" id="cq" placeholder="Search name, phone or email…" style="max-width:340px;margin-bottom:12px"><div style="overflow:auto"><table><thead><tr><th>Name</th><th>Contact</th><th class="hide-m">Address</th><th>Orders</th><th></th></tr></thead><tbody id="crows"></tbody></table></div></div>`;
+  draw('');$('#cq').oninput=e=>draw(e.target.value.toLowerCase());
+  $('#view').onclick=async e=>{const b=e.target.closest('[data-cx]');if(!b||!confirm('Delete this customer account? Their past orders stay in Orders.'))return;await api('/api/admin/customers/'+b.dataset.cx,{method:'DELETE'});S.customers=S.customers.filter(c=>c.id!==b.dataset.cx);customers();flash('Deleted');};
+}
+// ---------- website menu ----------
+function menuEditor(){
+  const L=S.menu=S.menu||mergeNav(S.site).map(({key,label,href,visible})=>({key,label,href,visible}));
+  const kind=i=>i.key.startsWith('brand:')?'Phone brand (dropdown with models)':i.key==='designs'?'Designs dropdown':i.key.startsWith('custom')?'Custom link':'Built-in page';
+  const draw=()=>{$('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Website</span><h1>Website menu</h1></div></div>
+    <p class="hint" style="margin:-12px 0 16px">This is the blue menu bar on the website (and the mobile menu). Rename, hide, reorder or add your own links. New phone brands added in <b>Phones & models</b> appear here automatically.</p>
+    <div class="panel"><div style="overflow:auto"><table><thead><tr><th>Show</th><th>Menu name</th><th class="hide-m">Type</th><th>Link</th><th></th></tr></thead><tbody>${L.map((i,k)=>`<tr>
+      <td><input type="checkbox" data-mv="${k}" ${i.visible!==false?'checked':''} style="width:18px;height:18px;accent-color:var(--navy)"></td>
+      <td><input class="input" data-ml="${k}" value="${esc(i.label)}" style="min-width:150px"></td><td class="hide-m muted" style="font-size:13px">${kind(i)}</td>
+      <td>${i.key.startsWith('custom')?`<input class="input" data-mh="${k}" value="${esc(i.href||'')}" placeholder="/shop?sale=1 or https://…" style="min-width:180px">`:`<span class="muted" style="font-size:13px">${esc(i.href)}</span>`}</td>
+      <td style="white-space:nowrap"><button class="btn ghost sm" data-mu="${k}" ${k?'':'disabled'}>↑</button> <button class="btn ghost sm" data-md="${k}" ${k<L.length-1?'':'disabled'}>↓</button>${i.key.startsWith('custom')?` <button class="btn ghost sm" data-mx="${k}">✕</button>`:''}</td></tr>`).join('')}</tbody></table></div>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn ghost" id="addm">+ Add custom link</button><button class="btn ghost" id="resetm">Reset to default</button><button class="btn" id="savem" style="margin-left:auto">Save menu</button></div></div>`;};
+  draw();const v=$('#view');
+  v.oninput=e=>{const t=e.target;if(t.dataset.ml)L[t.dataset.ml].label=t.value;if(t.dataset.mh)L[t.dataset.mh].href=t.value;};
+  v.onchange=e=>{const t=e.target;if(t.dataset.mv)L[t.dataset.mv].visible=t.checked;};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.mu){const k=+b.dataset.mu;[L[k-1],L[k]]=[L[k],L[k-1]];draw();}
+    if(b.dataset.md){const k=+b.dataset.md;[L[k+1],L[k]]=[L[k],L[k+1]];draw();}
+    if(b.dataset.mx){L.splice(+b.dataset.mx,1);draw();}
+    if(b.id==='addm'){L.push({key:'custom'+Date.now(),label:'New link',href:'/shop',visible:true});draw();}
+    if(b.id==='resetm'&&confirm('Reset the menu to default?')){S.menu=null;await saveSite({settings:{...S.site.settings,nav:[]}});menuEditor();}
+    if(b.id==='savem'){if(L.some(i=>!i.label.trim()))return flash('Every menu item needs a name');await saveSite({settings:{...S.site.settings,nav:L.map(({key,label,href,visible})=>({key,label:label.trim(),href,visible}))}});S.menu=null;menuEditor();}};
+}
+// ---------- pages & policies ----------
+function pagesEditor(){
+  const P=S.pagesDraft=S.pagesDraft||structuredClone(S.site.settings.pages||{});
+  const keys=Object.keys(P);let cur=S.pageKey&&P[S.pageKey]?S.pageKey:keys[0];
+  const draw=()=>{const pg=P[cur];$('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Website</span><h1>Pages & policies</h1></div>${cur?`<a class="btn ghost sm" href="/page/${cur}" target="_blank">${IC.eye} View page</a>`:''}</div>
+    <p class="hint" style="margin:-12px 0 16px">These pages are linked in the website footer. Writing tips: leave an empty line between paragraphs · start a line with <b>## </b> for a heading · start lines with <b>- </b> for a bullet list.</p>
+    <div class="tabs" style="margin-bottom:14px">${keys.map(k=>`<button class="${k===cur?'on':''}" data-pk="${k}">${esc(P[k].title)}</button>`).join('')}<button data-newp>+ New page</button></div>
+    ${pg?`<div class="panel"><div class="g2"><div class="fld"><label>Page title</label><input class="input" data-pt value="${esc(pg.title)}"></div><div class="fld"><label>Page address</label><div class="input" style="display:flex;align-items:center;background:var(--soft)">/page/${esc(cur)}</div></div></div>
+      <div class="fld"><label>Content</label><textarea class="input" data-pb rows="16" style="font-family:inherit;line-height:1.6">${esc(pg.body||'')}</textarea></div>
+      <label class="ckl" style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" data-pe ${pg.enabled!==false?'checked':''}> Show this page on the website</label>
+      <div style="display:flex;gap:8px;margin-top:16px">${['delivery','returns','faq','privacy','terms'].includes(cur)?'':'<button class="btn ghost" data-pdel>Delete page</button>'}<button class="btn" data-psave style="margin-left:auto">Save pages</button></div></div>`:''}`;};
+  draw();const v=$('#view');
+  v.oninput=e=>{const t=e.target;if(t.dataset.pt!==undefined)P[cur].title=t.value;if(t.dataset.pb!==undefined)P[cur].body=t.value;};
+  v.onchange=e=>{if(e.target.dataset.pe!==undefined)P[cur].enabled=e.target.checked;};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.pk){cur=S.pageKey=b.dataset.pk;draw();}
+    if(b.dataset.newp!==undefined){const t=prompt('Page title (e.g. Warranty)');if(!t)return;const k=t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'page'+Date.now();P[k]={title:t,body:'',enabled:true};cur=S.pageKey=k;draw();}
+    if(b.dataset.pdel!==undefined&&confirm('Delete this page?')){delete P[cur];cur=S.pageKey=Object.keys(P)[0];draw();}
+    if(b.dataset.psave!==undefined){await saveSite({settings:{...S.site.settings,pages:P}});S.pagesDraft=null;pagesEditor();}};
+}
+function settings(){
+  const s=structuredClone(S.site.settings);
+  const F=(k,l,t='text',ph='')=>`<div class="fld"><label>${l}</label>${t==='area'?`<textarea class="input" rows="5" data-s="${k}">${esc(s[k]||'')}</textarea>`:t==='img'?imgPick('s:'+k,s[k]):`<input class="input" type="${t}" data-s="${k}" value="${esc(s[k]||'')}" placeholder="${ph}">`}</div>`;
+  const redraw=()=>{$('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Website</span><h1>Site settings</h1></div></div>
+   <div class="panel"><h3>Logo & name</h3><div class="g2">${F('logo','Logo (square or round image works best)','img')}<div>${F('logoSubtitle','Small text under name','text','iPhone · Pixel')}<label class="ckl" style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" id="wm" ${s.showWordmark!==false?'checked':''}> Show website name next to logo</label></div></div></div>
+   <div class="panel"><h3>General</h3><div class="g2">${F('siteName','Website name')}${F('tagline','Tagline')}</div>${F('slogan','Brand slogan (product page, footer & invoice)','text','Imported Designs. Quality Guaranteed.')}${F('announcement','Top announcement bar','text','Separate messages with •')}<p class="hint">Separate multiple messages with • — they scroll across the top.</p></div>
+   <div class="panel"><h3>Contact</h3><div class="g2">${F('whatsapp','WhatsApp number (country code, no +)','text','8801971418887')}${F('phone','Phone shown on site')}${F('email','Email','email')}${F('address','Address')}${F('facebook','Facebook page link','url','https://facebook.com/…')}${F('instagram','Instagram link','url','https://instagram.com/…')}</div></div>
+   <div class="panel"><h3>Delivery & currency</h3><div class="g3">${F('deliveryInside','Delivery inside Dhaka (৳)','number')}${F('deliveryOutside','Delivery outside Dhaka (৳)','number')}${F('currency','Currency symbol')}</div>${F('footerNote','Footer text')}</div>
+   <div class="panel"><h3>About section</h3><p class="hint">Shown on the home page and the About page. Wrap words in *stars* for gold italic.</p>${F('aboutTitle','Title')}${F('aboutText','Story (blank line between paragraphs)','area')}${F('aboutImage','Photo','img')}</div>
+   <div class="panel"><h3>Sale banner (home page)</h3><p class="hint">Appears when at least one product has a discount.</p><div class="g2">${F('promoEyebrow','Small text')}${F('promoTitle','Title')}${F('promoCode','Coupon code to show (optional)')}${F('promoImage','Photo','img')}</div>${F('promoText','Text')}
+   <div class="sticky-save"><button class="btn" id="saves">Save all settings</button></div></div>`;};
+  redraw();const v=$('#view');
+  v.oninput=e=>{if(e.target.dataset.s)s[e.target.dataset.s]=e.target.value;if(e.target.id==='wm')s.showWordmark=e.target.checked;};
+  v.onchange=async e=>{const t=e.target;if(t.dataset.img&&t.files[0]){const [u]=await uploadFiles([t.files[0]]);s[t.dataset.img.slice(2)]=u;redraw();flash('Photo added — click Save');}};
+  v.onclick=async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.clearimg){s[b.dataset.clearimg.slice(2)]='';redraw();}
+    if(b.id==='saves'){s.whatsapp=String(s.whatsapp).replace(/\D/g,'');if(s.whatsapp.length<10)return flash('Check the WhatsApp number');if(!s.logo)s.logo='/img/logo.png';s.logoConfirmed=true;await saveSite({settings:s});render();}};
+}
+function account(){
+  $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Security</span><h1>Account</h1></div></div>
+  <div class="panel" style="max-width:520px"><h3>Admin login</h3>
+   <div class="fld"><label>Login email</label><input class="input" id="ae" type="email" value="${esc(S.site.admin?.email||'')}"></div>
+   <p class="hint" style="margin:0 0 14px">Use this email and password on the website’s Sign in page — it opens the admin panel.</p><div class="fld"><label>New password <small>(leave empty to keep current)</small></label><input class="input" id="ap" type="password" autocomplete="new-password"></div>
+   <div class="fld"><label>Confirm password</label><input class="input" id="ap2" type="password" autocomplete="new-password"></div>
+   <button class="btn" id="savep">Update login</button></div>`;
+  $('#savep').onclick=async()=>{if($('#ap').value!==$('#ap2').value)return flash('Passwords do not match');
+    try{await api('/api/admin/password',{method:'POST',body:JSON.stringify({email:$('#ae').value,password:$('#ap').value})});S.site.admin.email=$('#ae').value.trim().toLowerCase();flash('Login updated ✓');$('#ap').value=$('#ap2').value='';}catch(e){flash(e.message);}};
+}
+TOKEN?load():renderLogin();
+window.addEventListener('hashchange',()=>{const t=location.hash.slice(1);if(t&&t!==S.tab&&S.site){S.tab=t;S.edit=null;render();}});
+</script></body></html>

@@ -1,0 +1,74 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<main class="container" id="app"><div class="pd"><div class="skel"></div><div></div></div></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const slug=decodeURIComponent(location.pathname.split('/').pop());
+  const [site,p]=await Promise.all([boot('x'),fetch('/api/products/'+encodeURIComponent(slug)).then(r=>r.ok?r.json():null)]);
+  const s=site.settings;
+  if(!p){$('#app').innerHTML=`<div class="empty" style="padding:120px 0"><h3>Case not found</h3><p>It may have sold out or moved.</p><p style="margin-top:22px"><a class="btn" href="/shop">Back to shop</a></p></div>`;return;}
+  document.title=p.name+' — '+s.siteName;
+  const brand=site.brands.find(b=>b.id===p.brand);
+  const models=p.models;
+  const ordered=brand?modelsOf(brand).map(m=>m.name).filter(m=>models.includes(m)).reverse():models;
+  const want=new URLSearchParams(location.search).get('model');
+  const remembered=store.get('cc_model','');
+  const st={v:Math.max(0,p.variants.findIndex(v=>qtyOf(v)>0)),img:0,model:models.includes(want)?want:models.includes(remembered)?remembered:'',qty:1};
+  const pi=priceInfo(p),cat=catOf(p.categories?.[0]);
+  const imgsAll=p.variants.flatMap((v,vi)=>v.images.map((src,ii)=>({src,vi,ii})));
+  document.body.classList.add('has-mbuy');
+  $('#app').innerHTML=`<div class="crumbs" style="padding-top:22px"><a href="/">Home</a> / <a href="/shop?brand=${p.brand}">${esc(brandName(p.brand))}</a>${cat?` / <a href="/category/${cat.id}">${esc(cat.name)}</a>`:''} / ${esc(p.name)}</div>
+  <div class="pd">
+    <div class="gallery"><div class="thumbs" id="thumbs"></div><div class="main" id="main"></div></div>
+    <div class="pinfo">
+      <span class="eyebrow">${esc(brandName(p.brand))}${cat?' · '+esc(cat.name):''}</span>
+      <h1>${esc(p.name)}</h1>
+      <div class="price ${pi.off?'sale':''}"><b>${money(pi.final)}</b>${pi.off?`<s>${money(pi.regular)}</s><span class="save">Save ${money(pi.saved)}</span>`:''}</div>
+      ${pi.endsAt?`<div class="ends">${ICON.clock.replace('<svg','<svg width="16" height="16"')} Offer ends ${new Date(pi.endsAt).toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</div>`:''}
+      <div class="opt"><div class="lbl">Colour <span id="cname"></span></div><div class="colors" id="colors"></div></div>
+      <div class="opt"><div class="lbl"><label for="model">Phone model</label><span>Available for ${models.length} model${models.length===1?'':'s'}</span></div>
+        <select class="input" id="model" style="height:54px"><option value="">Select your phone model</option>${ordered.map(m=>`<option ${m===st.model?'selected':''}>${esc(m)}</option>`).join('')}</select></div>
+      <div class="buy"><div class="qty"><button data-q="-1" aria-label="Decrease">−</button><input id="qty" value="1" inputmode="numeric" aria-label="Quantity"><button data-q="1" aria-label="Increase">+</button></div>
+        <button class="btn ghost" id="add">${ICON.bag} Add to cart</button>
+        <button class="btn wa" id="order">${ICON.wa} Order now on WhatsApp</button></div>
+      ${s.slogan?`<p class="slogan-p">${ICON.tie}<span>${esc(s.slogan)}</span></p>`:''}<div class="perks"><div>${ICON.cash} Cash on delivery</div><div>${ICON.truck} Dhaka ${money(s.deliveryInside)} · Outside ${money(s.deliveryOutside)}</div><div>${ICON.fit} Precise fit for your model</div><div>${ICON.shield} Quality checked before dispatch</div></div>
+      <div class="acc">
+        <details open><summary>Description</summary><div class="body"><p>${esc(p.description)}</p>${p.features.length?`<ul style="margin-top:10px">${p.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>`:''}</div></details>
+        <details><summary>Compatible models</summary><div class="body fit">${ordered.map(m=>`<a href="/phone/${modelSlug(m)}"><span>${esc(m)}</span></a>`).join('')}</div></details>
+        <details><summary>Delivery & payment</summary><div class="body"><p>Inside Dhaka: ${money(s.deliveryInside)} · Outside Dhaka: ${money(s.deliveryOutside)}.<br>Pay in cash when your order arrives. We confirm every order on WhatsApp before shipping.</p></div></details>
+      </div>
+    </div>
+  </div>
+  <section style="padding-bottom:90px"><div class="head"><div><span class="eyebrow">You may also like</span><h2 style="margin-top:10px">More from the collection</h2></div><a class="link" href="/shop?brand=${p.brand}">View all</a></div><div class="grid" id="rel"></div></section>
+  <div class="mbuy"><div class="price ${pi.off?'sale':''}"><b>${money(pi.final)}</b></div><button class="btn wa" id="order2">${ICON.wa} Order now</button></div>`;
+  const draw=()=>{
+    const v=p.variants[st.v]||{name:'',images:[]};const imgs=v.images.length?v.images:[s.logo];
+    $('#main').innerHTML=`<img src="${esc(imgs[st.img]||imgs[0])}" alt="${esc(p.name)} — ${esc(v.name)}">`;
+    $('#thumbs').innerHTML=imgsAll.map(t=>`<button class="${t.vi===st.v&&t.ii===st.img?'on':''}" data-vi="${t.vi}" data-ii="${t.ii}" aria-label="${esc(p.variants[t.vi].name)}"><img src="${esc(t.src)}" alt=""></button>`).join('');
+    $('#colors').innerHTML=p.variants.map((vv,i)=>`<button title="${esc(vv.name)}" aria-label="${esc(vv.name)}" class="${i===st.v?'on':''}" data-v="${i}" style="background:${esc(vv.hex)}" ${qtyOf(vv)<=0?'disabled':''}></button>`).join('');
+    const q=qtyOf(v);$('#cname').innerHTML=esc(v.name)+' · '+stockLabel(q).replace('class="stock','style="margin:0" class="stock');
+    st.qty=Math.max(1,Math.min(st.qty,q||1));$('#qty').value=st.qty;
+    const all=totalStock(p);$('#add').disabled=$('#order').disabled=$('#order2').disabled=q<=0;$('#order').innerHTML=q<=0?(all?'This colour is sold out':'Sold out'):ICON.wa+' Order now on WhatsApp';
+  };
+  const ready=()=>{
+    if(!st.model){toast('Please select your phone model');$('#model').focus();$('#model').scrollIntoView({block:'center',behavior:'smooth'});return null;}
+    const v=p.variants[st.v];if(qtyOf(v)<=0){toast('This colour is sold out');return null;}if(st.qty>qtyOf(v)){toast(`Only ${qtyOf(v)} left in this colour`);return null;}
+    return {slug:p.slug,name:p.name,price:pi.final,image:v?.images[0]||'',color:v?.name||'',model:st.model,qty:st.qty};
+  };
+  $('#app').addEventListener('click',e=>{
+    const t=e.target.closest('button');if(!t)return;
+    if(t.dataset.v!==undefined){st.v=+t.dataset.v;st.img=0;draw();}
+    else if(t.dataset.vi!==undefined){st.v=+t.dataset.vi;st.img=+t.dataset.ii;draw();}
+    else if(t.dataset.q){const mx=Math.max(1,qtyOf(p.variants[st.v]));st.qty=Math.max(1,Math.min(mx,st.qty+ +t.dataset.q));$('#qty').value=st.qty;if(+t.dataset.q>0&&st.qty===mx)toast(`Only ${mx} in stock`);}
+    else if(t.id==='add'){const it=ready();if(it){Cart.add(it);toast('Added to cart ✓');}}
+    else if(t.id==='order'||t.id==='order2'){const it=ready();if(it)openOrder({items:[it]});}
+  });
+  $('#app').addEventListener('change',e=>{if(e.target.id==='model'){st.model=e.target.value;store.set('cc_model',st.model);}if(e.target.id==='qty')st.qty=Math.max(1,Math.min(99,parseInt(e.target.value)||1));});
+  draw();
+  const rel=PRODUCTS.filter(x=>x.slug!==p.slug).map(x=>({x,score:(x.brand===p.brand)*2+(x.categories||[]).filter(c=>p.categories?.includes(c)).length})).sort((a,b)=>b.score-a.score).slice(0,4).map(o=>o.x);
+  $('#rel').innerHTML=rel.map(productCard).join('');
+})();
+</script></body></html>

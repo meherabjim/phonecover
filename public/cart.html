@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your Cart — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / Cart</div><h1>Your cart</h1></div></div></div>
+<main class="container" id="app"></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const site=await boot('cart'),s=site.settings;let coupon=null;
+  const items0=Cart.get().filter(i=>PRODUCTS.some(p=>p.slug===i.slug));items0.forEach(i=>i.price=priceInfo(PRODUCTS.find(p=>p.slug===i.slug)).final);Cart.set(items0);
+  const draw=()=>{
+    const items=Cart.get();
+    if(!items.length){$('#app').innerHTML=`<div class="empty" style="padding:100px 0"><h3>Your cart is empty</h3><p>Discover cases tailored for your phone.</p><p style="margin-top:24px"><a class="btn" href="/shop">Start shopping ${ICON.arrow}</a></p></div>`;return;}
+    const sub=items.reduce((a,i)=>a+i.price*i.qty,0),cd=coupon?Math.min(sub,coupon.amount):0;
+    $('#app').innerHTML=`<div class="cart-wrap"><div>${items.map((i,k)=>`<div class="line"><a href="/product/${i.slug}"><img src="${esc(i.image||site.settings.logo)}" alt=""></a><div><h4><a href="/product/${i.slug}">${esc(i.name)}</a></h4><small>${esc(i.model)} · ${esc(i.color)} · ${money(i.price)}</small>
+      <div style="display:flex;align-items:center"><div class="qty"><button data-k="${k}" data-d="-1" aria-label="Decrease">−</button><input value="${i.qty}" readonly aria-label="Quantity"><button data-k="${k}" data-d="1" aria-label="Increase">+</button></div><button class="rm" data-rm="${k}">Remove</button></div></div><b>${money(i.price*i.qty)}</b></div>`).join('')}
+      <a class="link" href="/shop" style="display:inline-block;margin-top:22px">← Continue shopping</a></div>
+      <aside class="summary"><h3>Order summary</h3>
+        <div class="r"><span>Subtotal (${items.reduce((a,i)=>a+i.qty,0)} items)</span><span>${money(sub)}</span></div>
+        ${site.hasCoupons?`<div class="coupon"><input class="input" id="code" placeholder="Coupon code" value="${esc(coupon?.code||'')}" ${coupon?'readonly':''} aria-label="Coupon code"><button class="btn ghost" id="apply">${coupon?'Remove':'Apply'}</button></div>`:''}
+        ${cd?`<div class="r" style="color:var(--ok)"><span>Coupon ${esc(coupon.code)} (${esc(coupon.label)})</span><span>−${money(cd)}</span></div>`:''}
+        <div class="r"><span>Delivery</span><span class="muted">Chosen at next step</span></div>
+        <div class="r t"><span>Total</span><span>${money(sub-cd)}</span></div>
+        <button class="btn wa block" id="checkout" style="height:54px;margin-top:10px">${ICON.wa} Order on WhatsApp</button>
+        <p class="muted" style="font-size:13.5px;margin-top:12px;text-align:center">Cash on delivery · No online payment</p></aside></div>`;
+  };
+  $('#app').addEventListener('click',async e=>{
+    const t=e.target.closest('button');if(!t)return;const items=Cart.get();
+    if(t.dataset.rm!==undefined){items.splice(+t.dataset.rm,1);Cart.set(items);coupon=null;draw();}
+    else if(t.dataset.k!==undefined){const i=items[+t.dataset.k];const pr=PRODUCTS.find(x=>x.slug===i.slug);const mx=Math.max(1,qtyOf(pr?.variants.find(v=>v.name===i.color)));if(+t.dataset.d>0&&i.qty>=mx){return toast(`Only ${mx} in stock`);}i.qty=Math.max(1,Math.min(mx,i.qty+ +t.dataset.d));Cart.set(items);if(coupon)coupon=null,toast('Re-apply your coupon');draw();}
+    else if(t.id==='apply'){if(coupon){coupon=null;return draw();}
+      const sub=items.reduce((a,i)=>a+i.price*i.qty,0);
+      const r=await fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:$('#code').value,subtotal:sub})});const j=await r.json();
+      if(!r.ok)return toast(j.error);coupon=j;toast('Coupon applied ✓');draw();}
+    else if(t.id==='checkout')openOrder({items,coupon});
+  });
+  draw();
+})();
+</script></body></html>

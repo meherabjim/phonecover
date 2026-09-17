@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About Us — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<main id="app"></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const site=await boot('about'),s=site.settings,P=PRODUCTS;const em=t=>esc(t).replace(/\*(.+?)\*/g,'<em>$1</em>');
+  const paras=(s.aboutText||'').split(/\n+/).filter(Boolean);
+  $('#app').innerHTML=`
+  <section class="about-hero"><div class="container"><img class="mark" src="${esc(s.logo)}" alt=""><span class="eyebrow">About ${esc(s.siteName)}</span><h1>${em(s.aboutTitle||'Our story')}</h1><p>${esc(s.tagline)}.</p></div></section>
+  <section class="sec"><div class="container about">
+    <div class="ph reveal"><img src="${esc(s.aboutImage||P[0]?.variants[0]?.images[0]||'')}" alt=""><div class="seal"><img src="${esc(s.logo)}" alt=""></div></div>
+    <div class="txt prose reveal"><span class="eyebrow">Our story</span>${paras.map(p=>`<p>${esc(p)}</p>`).join('')}
+      <div class="values"><div><b>${P.length}+</b><small>Case styles</small></div><div><b>${site.brands.reduce((a,b)=>a+modelsOf(b).length,0)}</b><small>Phone models</small></div><div><b>${site.categories.length}</b><small>Collections</small></div></div></div>
+  </div></section>
+  <section class="sec ivory"><div class="container">
+    <div class="head reveal"><div><h2>Why buy from us</h2></div></div>
+    <div class="cards3">
+      <div class="c reveal">${ICON.gem}<h4>Checked before delivery</h4><p>We check every cover for fit and finish before it is packed.</p></div>
+      <div class="c reveal">${ICON.fit}<h4>Right cover for your model</h4><p>We only sell iPhone and Google Pixel covers, listed by exact model.</p></div>
+      <div class="c reveal">${ICON.cash}<h4>Cash on delivery</h4><p>No advance payment needed. Order on WhatsApp and pay when you receive it.</p></div>
+    </div></div></section>
+  <section class="sec"><div class="container" style="text-align:center">
+    <h2 style="margin:12px 0">${esc(s.address)}</h2><p class="muted">${esc(s.phone)} · ${esc(s.email)}</p>
+    <div class="cta" style="justify-content:center;margin-top:26px"><a class="btn wa" href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener">${ICON.wa} Chat on WhatsApp</a><a class="btn ghost" href="/shop">Shop the collection</a></div>
+  </div></section>`;
+  reveal();
+})();
+</script></body></html>

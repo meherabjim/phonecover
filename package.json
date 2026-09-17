@@ -1,0 +1,13 @@
+{
+  "name": "cravat-cases",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cravat Cases - iPhone & Google Pixel covers shop (WhatsApp ordering)",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

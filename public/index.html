@@ -1,0 +1,85 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cravat Cases — Unwrap Elegance | iPhone & Google Pixel Covers</title><meta name="description" content="Buy iPhone & Google Pixel covers in Bangladesh — MagSafe, leather, carbon fibre & silicone cases. Cash on delivery, order on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<main id="app"><section class="hero"><div class="container"><div class="slider skel" style="aspect-ratio:21/9"></div></div></section></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const site=await boot('home'),s=site.settings,P=PRODUCTS;
+  const clean=t=>String(t||'').replace(/\*/g,'');
+  const img=p=>p?.variants[0]?.images[0]||s.logo;
+  const banners=site.banners.length?site.banners:[{title:s.siteName,subtitle:s.tagline,image:img(P[0]),buttonText:'Shop now',buttonLink:'/shop'}];
+  const sale=P.filter(p=>priceInfo(p).off&&totalStock(p)).sort((a,b)=>priceInfo(b).off-priceInfo(a).off);
+  const fresh=[...P].sort((a,b)=>(b.isNew-a.isNew)||(b.createdAt-a.createdAt)).slice(0,10);
+  const best=(P.filter(p=>p.featured).length?P.filter(p=>p.featured):P).slice(0,10);
+  const cnt=id=>P.filter(p=>p.categories?.includes(id)).length;
+  const maxOff=sale.length?priceInfo(sale[0]).off:0;
+  $('#app').innerHTML=`
+  <section class="hero"><div class="container">
+    <div class="slider ${banners.some(b=>b.style==='brand')?'has-brand':''}" id="slider">
+      ${banners.map((b,i)=>b.style==='brand'?`<a class="slide brand ${i?'':'on'}" href="${esc(b.buttonLink||'/shop')}">
+        <div class="bphones">${[b.image,b.image2,b.image3,b.image4,b.image5].filter(Boolean).map((src,k)=>`<img class="${/\.png$/i.test(src)?'cut':'photo'} n${k+1}" src="${esc(src)}" alt="" ${i?'loading="lazy"':''}>`).join('')}</div>
+        <div class="bcard"><h2>${esc(clean(b.title))}${b.showIcon!==false?ICON.tie:''}</h2><p class="sub">${esc(b.subtitle||'')}</p>
+          <div class="brow"><small>${esc(b.smallText||'').replace(/\.\s+/g,'.<br>')}</small>${b.buttonText?`<span class="pill">${esc(b.buttonText)}</span>`:''}</div></div></a>`
+      :`<a class="slide ${i?'':'on'}" href="${esc(b.buttonLink||'/shop')}"><img src="${esc(b.image)}" alt="${esc(clean(b.title))}" ${i?'loading="lazy"':'fetchpriority="high"'}>
+        <div class="txt">${b.eyebrow?`<span class="tag">${esc(b.eyebrow)}</span>`:''}<h1>${esc(clean(b.title))}</h1><p>${esc(b.subtitle||'')}</p>${b.buttonText?`<span class="btn gold">${esc(b.buttonText)} ${ICON.arrow}</span>`:''}</div></a>`).join('')}
+      ${banners.length>1?`<div class="dots">${banners.map((_,i)=>`<button aria-label="Slide ${i+1}" class="${i?'':'on'}" data-s="${i}"></button>`).join('')}</div>
+      <button class="sl-arrow l" data-d="-1" aria-label="Previous">${ICON.left}</button><button class="sl-arrow r" data-d="1" aria-label="Next">${ICON.right}</button>`:''}
+    </div>
+    <div class="side-banners">${site.brands.slice(0,2).map(b=>`<a class="sb" href="/shop?brand=${b.id}"><img src="${esc(b.image||img(P.find(p=>p.brand===b.id)))}" alt="" loading="lazy"><div><b>${esc(b.name)} covers</b><small>${modelsOf(b).length} models · Shop now →</small></div></a>`).join('')}</div>
+  </div></section>
+  <section class="trust"><div class="container">
+    <div class="t">${ICON.cash}<div><b>Cash on delivery</b><small>Pay when you receive</small></div></div>
+    <div class="t">${ICON.truck}<div><b>All over Bangladesh</b><small>Dhaka ${money(s.deliveryInside)} · Outside ${money(s.deliveryOutside)}</small></div></div>
+    <div class="t">${ICON.shield}<div><b>Imported designs</b><small>Quality guaranteed</small></div></div>
+    <div class="t">${ICON.chat}<div><b>WhatsApp support</b><small>${esc(s.phone)}</small></div></div>
+  </div></section>
+
+  <section class="sec"><div class="container">
+    <div class="head"><h2>Shop by category</h2><a class="link" href="/shop">All products →</a></div>
+    <div class="cat-grid">${site.categories.map(c=>`<a class="cat-tile" href="/category/${c.id}"><div class="ph"><img loading="lazy" src="${esc(c.image||s.logo)}" alt="${esc(c.name)}"></div><b>${esc(c.name)}</b><small>${cnt(c.id)} items</small></a>`).join('')}</div>
+  </div></section>
+
+  <section class="sec soft"><div class="container">
+    <div class="head"><h2>New arrivals</h2><a class="link" href="/shop?new=1">View all →</a></div>
+    <div class="grid">${fresh.map(productCard).join('')}</div>
+  </div></section>
+
+  <section class="sec"><div class="container">
+    <div class="head"><h2>Find covers for your phone</h2><p>Tap your model to see every cover that fits it.</p></div>
+    ${site.brands.map(b=>`<div class="model-chips" style="margin-bottom:10px"><b>${esc(b.name)}:</b>${[...modelsOf(b)].reverse().slice(0,10).map(m=>`<a href="/phone/${modelSlug(m.name)}">${esc(m.name)}</a>`).join('')}<a href="/shop?brand=${b.id}" style="border-style:dashed">All ${esc(b.name)} →</a></div>`).join('')}
+  </div></section>
+
+  ${sale.length?`<section class="sec" style="padding-top:0"><div class="container"><div class="offer">
+    <div class="txt"><span class="eyebrow" style="color:var(--gold-l)">${esc(s.promoEyebrow||'Limited time offer')}</span><h2>${esc(clean(s.promoTitle)||`Up to ${maxOff}% off`)}</h2><p>${esc(s.promoText||'Special prices on selected covers while stock lasts.')}</p>
+      ${s.promoCode?`<span class="code">Coupon: <b>${esc(s.promoCode)}</b></span>`:''}<a class="btn gold" href="/shop?sale=1">Shop offers ${ICON.arrow}</a></div>
+    <div class="img"><img loading="lazy" src="${esc(s.promoImage||img(sale[0]))}" alt=""></div></div></div></section>
+  <section class="sec soft"><div class="container">
+    <div class="head"><h2>On sale now</h2><a class="link" href="/shop?sale=1">View all offers →</a></div>
+    <div class="grid">${sale.slice(0,5).map(productCard).join('')}</div>
+  </div></section>`:''}
+
+  <section class="sec"><div class="container">
+    <div class="head"><h2>Best selling</h2><a class="link" href="/shop">All products →</a></div>
+    <div class="grid">${best.map(productCard).join('')}</div>
+    <div style="text-align:center;margin-top:22px"><a class="btn ghost" href="/shop">See all ${P.length} products</a></div>
+  </div></section>
+
+  <section class="sec soft"><div class="container">
+    <div class="head"><h2>How to order</h2></div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><h4>Choose your cover</h4><p>Select your phone model and colour.</p></div></div>
+      <div class="step"><span class="n">2</span><div><h4>Order on WhatsApp</h4><p>Tap “Order now” — your order details are sent to us.</p></div></div>
+      <div class="step"><span class="n">3</span><div><h4>Receive & pay</h4><p>We confirm by phone and deliver. Pay cash on delivery.</p></div></div>
+    </div>
+  </div></section>`;
+  // slider
+  const sl=$('#slider'),slides=$$('.slide',sl);let cur=0,timer;
+  const go=i=>{cur=(i+slides.length)%slides.length;slides.forEach((e,k)=>e.classList.toggle('on',k===cur));$$('.dots button',sl).forEach((e,k)=>e.classList.toggle('on',k===cur));};
+  const auto=()=>{clearInterval(timer);if(slides.length>1)timer=setInterval(()=>go(cur+1),6000);};auto();
+  sl.addEventListener('click',e=>{const d=e.target.closest('[data-s],[data-d]');if(!d)return;e.preventDefault();d.dataset.s!==undefined?go(+d.dataset.s):go(cur+ +d.dataset.d);auto();});
+  let tx=0;sl.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){go(cur+(dx<0?1:-1));auto();}});
+})();
+</script></body></html>

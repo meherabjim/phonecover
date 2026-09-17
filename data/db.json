@@ -1,0 +1,1387 @@
+{
+  "settings": {
+    "siteName": "Cravat Cases",
+    "tagline": "iPhone & Google Pixel covers in Bangladesh",
+    "announcement": "Imported Designs. Quality Guaranteed. • Cash on delivery all over Bangladesh • Order easily on WhatsApp",
+    "whatsapp": "8801971418887",
+    "phone": "01971418887",
+    "email": "cravatcases@gmail.com",
+    "address": "Bosila Garden City, Mohammadpur, Dhaka",
+    "facebook": "",
+    "instagram": "",
+    "deliveryInside": "70",
+    "deliveryOutside": "130",
+    "currency": "৳",
+    "footerNote": "Quality iPhone and Google Pixel covers with home delivery all over Bangladesh.",
+    "adminEmail": "cravatcases@gmail.com",
+    "aboutTitle": "Unwrap Elegance.",
+    "aboutText": "Cravat Cases is a Dhaka-based shop selling covers for iPhone and Google Pixel phones.\n\nWe list every cover by exact phone model, so you always get the right fit. Each order is checked before it is packed and delivered all over Bangladesh.\n\nOrdering is simple: choose your cover, send the order on WhatsApp and pay cash when it arrives.",
+    "aboutImage": "/uploads/p38.jpg",
+    "promoEyebrow": "Limited time offer",
+    "promoTitle": "Up to 24% off selected covers",
+    "promoText": "Special prices on MagSafe, leather and carbon fibre covers while stock lasts.",
+    "promoCode": "CRAVAT10",
+    "promoImage": "/uploads/p23.jpg",
+    "logo": "/img/logo.png",
+    "showWordmark": true,
+    "pages": {
+      "delivery": {
+        "title": "Delivery information",
+        "enabled": true,
+        "body": "We deliver all over Bangladesh through trusted courier services.\n\n## Delivery charge\n- Inside Dhaka: ৳70\n- Outside Dhaka: ৳130\n\n## Delivery time\n- Inside Dhaka: 1–2 working days\n- Outside Dhaka: 2–4 working days\n\n## Payment\nCash on delivery is available everywhere. You can also pay by bKash or Nagad — we will share the number on WhatsApp when we confirm your order.\n\nPlease check the cover in front of the delivery person before paying."
+      },
+      "returns": {
+        "title": "Return & exchange",
+        "enabled": true,
+        "body": "We want you to be happy with your cover.\n\n## Exchange\n- If you receive a wrong model, wrong colour or a damaged cover, we will exchange it free of charge.\n- Please tell us on WhatsApp within 3 days of receiving the order, with a photo.\n- The cover must be unused and in its original packaging.\n\n## Not eligible\n- Covers that have been used, scratched or damaged after delivery.\n- Change of mind after the cover has been used.\n\n## Refund\nIf we cannot exchange the product, we will refund the product price by bKash/Nagad within 3 working days."
+      },
+      "faq": {
+        "title": "Frequently asked questions",
+        "enabled": true,
+        "body": "## How do I order?\nChoose your phone model and colour, then tap Order now. Your order is sent to us on WhatsApp and we confirm it by phone.\n\n## Do I need to pay in advance?\nNo. Cash on delivery is available all over Bangladesh.\n\n## How do I know the cover fits my phone?\nEvery product lists the exact phone models it fits. If you are not sure, send us your model name on WhatsApp.\n\n## How can I track my order?\nUse the Track Order page with your order number and mobile number.\n\n## Can I exchange a cover?\nYes — see our Return & exchange page."
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "enabled": true,
+        "body": "We only collect the information needed to deliver your order: your name, mobile number and address.\n\n- We use it to confirm and deliver your order and to contact you about it.\n- We never sell or share your details with anyone except the courier delivering your order.\n- If you create an account, your password is stored securely (encrypted).\n- You can ask us to delete your account at any time by WhatsApp or email."
+      },
+      "terms": {
+        "title": "Terms & conditions",
+        "enabled": true,
+        "body": "By placing an order on this website you agree to the following:\n\n- Prices and stock can change without notice. The price shown when you order is the price you pay.\n- An order is confirmed only after we contact you by phone or WhatsApp.\n- Product photos are for reference; the colour may look slightly different on different screens.\n- We may cancel an order if the product is out of stock or the contact details are not reachable.\n- Please see our Delivery information and Return & exchange pages for more details."
+      }
+    },
+    "setupAt": 1789588294087,
+    "nav": [],
+    "slogan": "Imported Designs. Quality Guaranteed."
+  },
+  "brands": [
+    {
+      "id": "iphone",
+      "name": "iPhone",
+      "models": [
+        {
+          "name": "iPhone 13 mini",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 13",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 13 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 13 Pro Max",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 14",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 14 Plus",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 14 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 14 Pro Max",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 15",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 15 Plus",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 15 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 15 Pro Max",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 16",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 16 Plus",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 16 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 16 Pro Max",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 16e",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 17",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone Air",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 17 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 17 Pro Max",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 18 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "iPhone 18 Pro Max",
+          "image": "",
+          "active": true
+        }
+      ],
+      "image": "/uploads/p20.jpg",
+      "tagline": "From iPhone 13 to the new iPhone 18 Pro"
+    },
+    {
+      "id": "pixel",
+      "name": "Google Pixel",
+      "models": [
+        {
+          "name": "Pixel 7",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 7 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 7a",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 8",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 8 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 8a",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 9",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 9 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 9 Pro XL",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 9a",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 10",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 10 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 10 Pro XL",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 10a",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 11",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 11 Pro",
+          "image": "",
+          "active": true
+        },
+        {
+          "name": "Pixel 11 Pro XL",
+          "image": "",
+          "active": true
+        }
+      ],
+      "image": "/uploads/p08.jpg",
+      "tagline": "From Pixel 7 to the new Pixel 11 series"
+    }
+  ],
+  "categories": [
+    {
+      "id": "magsafe",
+      "name": "MagSafe",
+      "image": "/uploads/p20.jpg",
+      "active": true,
+      "description": "Covers with built-in magnets for MagSafe chargers and stands.",
+      "featured": true
+    },
+    {
+      "id": "leather",
+      "name": "Leather",
+      "image": "/uploads/p35.jpg",
+      "active": true,
+      "description": "Canvas and leather-finish covers.",
+      "featured": true
+    },
+    {
+      "id": "carbon-fiber",
+      "name": "Carbon Fiber",
+      "image": "/uploads/p16.jpg",
+      "active": true,
+      "description": "Thin and strong aramid fibre covers.",
+      "featured": true
+    },
+    {
+      "id": "silicone",
+      "name": "Silicone",
+      "image": "/uploads/p06.jpg",
+      "active": true,
+      "description": "Soft liquid silicone covers.",
+      "featured": true
+    },
+    {
+      "id": "fashion",
+      "name": "Fashion",
+      "image": "/uploads/p42.jpg",
+      "active": true,
+      "description": "Glitter, gradient and textured covers.",
+      "featured": true
+    },
+    {
+      "id": "rugged",
+      "name": "Rugged",
+      "image": "/uploads/p37.jpg",
+      "active": true,
+      "description": "Extra-protection covers with stands.",
+      "featured": true
+    }
+  ],
+  "products": [
+    {
+      "id": "b89f9d7e606f",
+      "name": "Frosted MagSafe Camera Guard Case",
+      "slug": "frosted-magsafe-camera-guard-case",
+      "brand": "iphone",
+      "price": 1690,
+      "description": "Frosted matte back cover with built-in MagSafe magnets and a raised metal camera frame. Does not show fingerprints and protects the camera and screen edges.",
+      "features": [
+        "MagSafe compatible magnetic ring",
+        "Electroplated metal camera frame",
+        "Anti-fingerprint frosted back",
+        "Raised edges for screen & lens"
+      ],
+      "models": [
+        "iPhone 13 mini",
+        "iPhone 13",
+        "iPhone 14",
+        "iPhone 14 Plus",
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 16",
+        "iPhone 16 Plus"
+      ],
+      "variants": [
+        {
+          "name": "Navy Blue",
+          "hex": "#1f3a73",
+          "images": [
+            "/uploads/p20.jpg"
+          ],
+          "stock": true,
+          "qty": 14
+        },
+        {
+          "name": "Titanium Grey",
+          "hex": "#9a9a98",
+          "images": [
+            "/uploads/p21.jpg"
+          ],
+          "stock": true,
+          "qty": 9
+        },
+        {
+          "name": "Mocha Brown",
+          "hex": "#7a5a3c",
+          "images": [
+            "/uploads/p22.jpg",
+            "/uploads/p28.jpg"
+          ],
+          "stock": true,
+          "qty": 22
+        },
+        {
+          "name": "Sunset Orange",
+          "hex": "#e39a3c",
+          "images": [
+            "/uploads/p23.jpg"
+          ],
+          "stock": true,
+          "qty": 6
+        },
+        {
+          "name": "Deep Purple",
+          "hex": "#4b2a57",
+          "images": [
+            "/uploads/p24.jpg"
+          ],
+          "stock": true,
+          "qty": 18
+        },
+        {
+          "name": "Frost White",
+          "hex": "#e9e9e9",
+          "images": [
+            "/uploads/p25.jpg"
+          ],
+          "stock": true,
+          "qty": 11
+        },
+        {
+          "name": "Forest Green",
+          "hex": "#1f5a4a",
+          "images": [
+            "/uploads/p26.jpg"
+          ],
+          "stock": true,
+          "qty": 4
+        },
+        {
+          "name": "Midnight Black",
+          "hex": "#2a2a2e",
+          "images": [
+            "/uploads/p27.jpg"
+          ],
+          "stock": true,
+          "qty": 16
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "Best Seller",
+      "createdAt": 1789573846129,
+      "updatedAt": 1789576997856,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "magsafe"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "6e73326b643f",
+      "name": "Canvas & Leather Two-Tone Case",
+      "slug": "canvas-leather-two-tone-case",
+      "brand": "iphone",
+      "price": 1890,
+      "description": "Two-tone cover with fabric texture on top and leather finish at the bottom. Raised edges around the camera and screen, slim and light.",
+      "features": [
+        "Woven canvas + PU leather",
+        "Precision stitched seam",
+        "Raised camera & screen lip",
+        "Slim, lightweight profile"
+      ],
+      "models": [
+        "iPhone 13 mini",
+        "iPhone 13",
+        "iPhone 13 Pro",
+        "iPhone 13 Pro Max",
+        "iPhone 14",
+        "iPhone 14 Plus",
+        "iPhone 14 Pro",
+        "iPhone 14 Pro Max",
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Charcoal",
+          "hex": "#3b3b3b",
+          "images": [
+            "/uploads/p35.jpg"
+          ],
+          "qty": 20,
+          "stock": true
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#7d9bb8",
+          "images": [
+            "/uploads/p36.jpg"
+          ],
+          "qty": 7,
+          "stock": true
+        },
+        {
+          "name": "Espresso Brown",
+          "hex": "#4a3025",
+          "images": [
+            "/uploads/p38.jpg"
+          ],
+          "qty": 12,
+          "stock": true
+        },
+        {
+          "name": "Slate Blue",
+          "hex": "#4f6275",
+          "images": [
+            "/uploads/p39.jpg"
+          ],
+          "qty": 25,
+          "stock": true
+        },
+        {
+          "name": "Cognac",
+          "hex": "#b85f22",
+          "images": [
+            "/uploads/p40.jpg"
+          ],
+          "qty": 8,
+          "stock": true
+        },
+        {
+          "name": "Classic Black",
+          "hex": "#1c1c1c",
+          "images": [
+            "/uploads/p41.jpg"
+          ],
+          "qty": 15,
+          "stock": true
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "Premium",
+      "createdAt": 1789573846128,
+      "updatedAt": 1789588213273,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "leather"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "d58c1406c1a0",
+      "name": "Aramid Carbon Fiber Case",
+      "slug": "aramid-carbon-fiber-case",
+      "brand": "iphone",
+      "price": 2290,
+      "description": "Very thin aramid (carbon fibre style) cover, only 0.9 mm. Light, strong and works with MagSafe and wireless charging.",
+      "features": [
+        "Real aramid fiber weave",
+        "0.9 mm ultra-slim",
+        "Metal camera surround",
+        "MagSafe friendly"
+      ],
+      "models": [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Stealth Black",
+          "hex": "#1a1a1a",
+          "images": [
+            "/uploads/p16.jpg"
+          ],
+          "stock": true,
+          "qty": 3
+        },
+        {
+          "name": "Crimson Stripe",
+          "hex": "#7a1f24",
+          "images": [
+            "/uploads/p18.jpg"
+          ],
+          "stock": true,
+          "qty": 19
+        },
+        {
+          "name": "Heritage Pattern",
+          "hex": "#5b4a6b",
+          "images": [
+            "/uploads/p19.jpg"
+          ],
+          "stock": true,
+          "qty": 14
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846127,
+      "updatedAt": 1789573846126,
+      "discount": {
+        "type": "flat",
+        "value": 500,
+        "endsAt": ""
+      },
+      "categories": [
+        "carbon-fiber"
+      ],
+      "isNew": true
+    },
+    {
+      "id": "2eb99f2a8dc9",
+      "name": "MagSafe Rotating Ring Stand Case",
+      "slug": "magsafe-rotating-ring-stand-case",
+      "brand": "iphone",
+      "price": 1790,
+      "description": "Matte cover with a magnetic ring that turns 360° and works as a stand for watching videos in landscape or portrait.",
+      "features": [
+        "360° rotating ring stand",
+        "Strong MagSafe magnets",
+        "Matte translucent back",
+        "Shock-absorbing corners"
+      ],
+      "models": [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Lavender",
+          "hex": "#b7a6e6",
+          "images": [
+            "/uploads/p14.jpg"
+          ],
+          "stock": true,
+          "qty": 9
+        },
+        {
+          "name": "Graphite",
+          "hex": "#3c3c3c",
+          "images": [
+            "/uploads/p15.jpg"
+          ],
+          "stock": true,
+          "qty": 22
+        },
+        {
+          "name": "Pearl White",
+          "hex": "#f2f2f2",
+          "images": [
+            "/uploads/p17.jpg"
+          ],
+          "stock": true,
+          "qty": 6
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846126,
+      "updatedAt": 1789573846125,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "magsafe"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "8ddd5eedd150",
+      "name": "Crinkle Texture Metal Camera Case",
+      "slug": "crinkle-texture-metal-camera-case",
+      "brand": "iphone",
+      "price": 1490,
+      "description": "Hard cover with a crinkle paper texture and aluminium camera frame. Light weight with button protection.",
+      "features": [
+        "Crinkle-texture finish",
+        "Brushed aluminium lens frame",
+        "Lightweight hard shell",
+        "Side-button protection"
+      ],
+      "models": [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Tangerine",
+          "hex": "#e8792a",
+          "images": [
+            "/uploads/p42.jpg"
+          ],
+          "stock": true,
+          "qty": 18
+        },
+        {
+          "name": "Champagne",
+          "hex": "#d9c4a3",
+          "images": [
+            "/uploads/p43.jpg"
+          ],
+          "stock": true,
+          "qty": 11
+        },
+        {
+          "name": "Onyx Black",
+          "hex": "#141414",
+          "images": [
+            "/uploads/p44.jpg"
+          ],
+          "stock": true,
+          "qty": 4
+        },
+        {
+          "name": "Ice Blue",
+          "hex": "#c9d8ea",
+          "images": [
+            "/uploads/p45.jpg"
+          ],
+          "stock": true,
+          "qty": 16
+        }
+      ],
+      "featured": false,
+      "active": true,
+      "badge": "Trending",
+      "createdAt": 1789573846125,
+      "updatedAt": 1789573846124,
+      "discount": {
+        "type": "flat",
+        "value": 300,
+        "endsAt": ""
+      },
+      "categories": [
+        "fashion"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "c46ba2ce1e65",
+      "name": "Glitter Mirror MagSafe Ring Case",
+      "slug": "glitter-mirror-magsafe-ring-case",
+      "brand": "iphone",
+      "price": 1790,
+      "description": "Glitter cover with a small mirror ring stand, stone camera rings and MagSafe magnets.",
+      "features": [
+        "Built-in makeup mirror ring",
+        "Rhinestone lens protectors",
+        "Electroplated edges",
+        "MagSafe compatible"
+      ],
+      "models": [
+        "iPhone 13 mini",
+        "iPhone 13",
+        "iPhone 13 Pro",
+        "iPhone 13 Pro Max",
+        "iPhone 14",
+        "iPhone 14 Plus",
+        "iPhone 14 Pro",
+        "iPhone 14 Pro Max",
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Rose Orange",
+          "hex": "#e58a3c",
+          "images": [
+            "/uploads/p29.jpg"
+          ],
+          "stock": false,
+          "qty": 0
+        },
+        {
+          "name": "Royal Purple",
+          "hex": "#5a2d6e",
+          "images": [
+            "/uploads/p34.jpg"
+          ],
+          "stock": true,
+          "qty": 3
+        }
+      ],
+      "featured": false,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846124,
+      "updatedAt": 1789573846123,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "fashion"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "52e60436a1b9",
+      "name": "Matte Metal-Lens MagSafe Case",
+      "slug": "matte-metal-lens-magsafe-case",
+      "brand": "iphone",
+      "price": 1490,
+      "description": "Simple matte cover with metal camera frame and MagSafe ring.",
+      "features": [
+        "Metal lens frame",
+        "MagSafe ring",
+        "Soft matte finish",
+        "Slim fit"
+      ],
+      "models": [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Stone Grey",
+          "hex": "#8f8f8f",
+          "images": [
+            "/uploads/p30.jpg"
+          ],
+          "stock": true,
+          "qty": 12
+        }
+      ],
+      "featured": false,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846123,
+      "updatedAt": 1789573846122,
+      "discount": {
+        "type": "flat",
+        "value": 300,
+        "endsAt": ""
+      },
+      "categories": [
+        "magsafe"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "6d3c69f76308",
+      "name": "Armor Ring Stand Cooling Case",
+      "slug": "armor-ring-stand-cooling-case",
+      "brand": "iphone",
+      "price": 1990,
+      "description": "Strong armour cover with a magnetic ring stand and air vents near the camera to keep the phone cool while gaming or charging.",
+      "features": [
+        "Heat-dissipation vents",
+        "Magnetic ring stand",
+        "Drop-tested armor corners",
+        "Full lens coverage"
+      ],
+      "models": [
+        "iPhone 15",
+        "iPhone 15 Plus",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone 16",
+        "iPhone 16 Plus",
+        "iPhone 16 Pro",
+        "iPhone 16 Pro Max",
+        "iPhone 16e",
+        "iPhone 17",
+        "iPhone Air",
+        "iPhone 17 Pro",
+        "iPhone 17 Pro Max",
+        "iPhone 18 Pro",
+        "iPhone 18 Pro Max"
+      ],
+      "variants": [
+        {
+          "name": "Tactical Black",
+          "hex": "#1f1f1f",
+          "images": [
+            "/uploads/p37.jpg"
+          ],
+          "stock": false,
+          "qty": 0
+        }
+      ],
+      "featured": false,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846122,
+      "updatedAt": 1789573846121,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "rugged"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "1ca5ea46ff30",
+      "name": "Pixel Liquid Silicone Case",
+      "slug": "pixel-liquid-silicone-case",
+      "brand": "pixel",
+      "price": 1490,
+      "description": "Soft liquid silicone cover with microfibre lining inside and a raised edge around the camera bar.",
+      "features": [
+        "Liquid silicone exterior",
+        "Microfibre inner lining",
+        "Raised camera bar guard",
+        "Precise button cut-outs"
+      ],
+      "models": [
+        "Pixel 7",
+        "Pixel 7 Pro",
+        "Pixel 7a",
+        "Pixel 8",
+        "Pixel 8 Pro",
+        "Pixel 8a",
+        "Pixel 9",
+        "Pixel 9 Pro",
+        "Pixel 9 Pro XL",
+        "Pixel 9a",
+        "Pixel 10",
+        "Pixel 10 Pro",
+        "Pixel 10 Pro XL",
+        "Pixel 10a",
+        "Pixel 11",
+        "Pixel 11 Pro",
+        "Pixel 11 Pro XL"
+      ],
+      "variants": [
+        {
+          "name": "Obsidian",
+          "hex": "#1d1d1d",
+          "images": [
+            "/uploads/p06.jpg"
+          ],
+          "stock": true,
+          "qty": 8
+        },
+        {
+          "name": "Blush Pink",
+          "hex": "#e8a9b6",
+          "images": [
+            "/uploads/p08.jpg"
+          ],
+          "stock": true,
+          "qty": 15
+        },
+        {
+          "name": "Cherry Red",
+          "hex": "#b0203a",
+          "images": [
+            "/uploads/p09.jpg"
+          ],
+          "stock": true,
+          "qty": 3
+        },
+        {
+          "name": "Mocha",
+          "hex": "#8a7263",
+          "images": [
+            "/uploads/p12.jpg"
+          ],
+          "stock": true,
+          "qty": 19
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "Best Seller",
+      "createdAt": 1789573846121,
+      "updatedAt": 1789573846120,
+      "discount": {
+        "type": "flat",
+        "value": 300,
+        "endsAt": ""
+      },
+      "categories": [
+        "silicone"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "33b1c48450ff",
+      "name": "Pixel Frosted MagSafe Lanyard Case",
+      "slug": "pixel-frosted-magsafe-lanyard-case",
+      "brand": "pixel",
+      "price": 1790,
+      "description": "Frosted cover with a magnetic ring for MagSafe accessories and a detachable hand strap (lanyard).",
+      "features": [
+        "Magnetic ring for wireless accessories",
+        "Detachable braided lanyard",
+        "Frosted anti-fingerprint back",
+        "Coloured camera bar frame"
+      ],
+      "models": [
+        "Pixel 9",
+        "Pixel 9 Pro",
+        "Pixel 9 Pro XL",
+        "Pixel 9a",
+        "Pixel 10",
+        "Pixel 10 Pro",
+        "Pixel 10 Pro XL",
+        "Pixel 10a",
+        "Pixel 11",
+        "Pixel 11 Pro",
+        "Pixel 11 Pro XL"
+      ],
+      "variants": [
+        {
+          "name": "Frost White",
+          "hex": "#eeeeee",
+          "images": [
+            "/uploads/p02.jpg",
+            "/uploads/p13.jpg"
+          ],
+          "stock": true,
+          "qty": 14
+        },
+        {
+          "name": "Lilac",
+          "hex": "#a88bd6",
+          "images": [
+            "/uploads/p10.jpg"
+          ],
+          "stock": true,
+          "qty": 9
+        },
+        {
+          "name": "Hot Pink",
+          "hex": "#e2458f",
+          "images": [
+            "/uploads/p11.jpg"
+          ],
+          "stock": true,
+          "qty": 22
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846120,
+      "updatedAt": 1789573846119,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "magsafe"
+      ],
+      "isNew": true
+    },
+    {
+      "id": "8924f74c619c",
+      "name": "Pixel Aramid Fiber Case",
+      "slug": "pixel-aramid-fiber-case",
+      "brand": "pixel",
+      "price": 2290,
+      "description": "Thin aramid fibre cover with gradient pattern. Very light and strong, works with wireless charging.",
+      "features": [
+        "Aramid fiber construction",
+        "Gradient weave design",
+        "Ultra-thin 0.9 mm",
+        "Wireless-charging friendly"
+      ],
+      "models": [
+        "Pixel 9",
+        "Pixel 9 Pro",
+        "Pixel 9 Pro XL",
+        "Pixel 9a",
+        "Pixel 10",
+        "Pixel 10 Pro",
+        "Pixel 10 Pro XL",
+        "Pixel 10a",
+        "Pixel 11",
+        "Pixel 11 Pro",
+        "Pixel 11 Pro XL"
+      ],
+      "variants": [
+        {
+          "name": "Mocha Gradient",
+          "hex": "#6b4a3a",
+          "images": [
+            "/uploads/p01.jpg"
+          ],
+          "stock": true,
+          "qty": 6
+        },
+        {
+          "name": "Ocean Blue",
+          "hex": "#1f3f5c",
+          "images": [
+            "/uploads/p04.jpg"
+          ],
+          "stock": true,
+          "qty": 18
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "Premium",
+      "createdAt": 1789573846119,
+      "updatedAt": 1789573846118,
+      "discount": {
+        "type": "flat",
+        "value": 500,
+        "endsAt": ""
+      },
+      "categories": [
+        "carbon-fiber"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "7cd6698c860e",
+      "name": "Pixel Fabric Ring Stand Case",
+      "slug": "pixel-fabric-ring-stand-case",
+      "brand": "pixel",
+      "price": 1890,
+      "description": "Fabric texture cover with a rotating magnetic ring stand and coloured camera bar frame.",
+      "features": [
+        "Premium fabric texture",
+        "Rotating ring kickstand",
+        "Accent camera bar frame",
+        "Shockproof bumper"
+      ],
+      "models": [
+        "Pixel 9",
+        "Pixel 9 Pro",
+        "Pixel 9 Pro XL",
+        "Pixel 9a",
+        "Pixel 10",
+        "Pixel 10 Pro",
+        "Pixel 10 Pro XL",
+        "Pixel 10a",
+        "Pixel 11",
+        "Pixel 11 Pro",
+        "Pixel 11 Pro XL"
+      ],
+      "variants": [
+        {
+          "name": "Sand Beige",
+          "hex": "#b8906a",
+          "images": [
+            "/uploads/p05.jpg"
+          ],
+          "stock": true,
+          "qty": 11
+        },
+        {
+          "name": "Denim Grey",
+          "hex": "#4a5566",
+          "images": [
+            "/uploads/p07.jpg"
+          ],
+          "stock": true,
+          "qty": 4
+        }
+      ],
+      "featured": true,
+      "active": true,
+      "badge": "",
+      "createdAt": 1789573846118,
+      "updatedAt": 1789573846117,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "leather"
+      ],
+      "isNew": false
+    },
+    {
+      "id": "3852299b419b",
+      "name": "Pixel Gradient Shimmer MagSafe Case",
+      "slug": "pixel-gradient-shimmer-magsafe-case",
+      "brand": "pixel",
+      "price": 1690,
+      "description": "Shiny gradient cover with a magnetic ring for MagSafe chargers and a raised camera bar edge.",
+      "features": [
+        "Iridescent gradient finish",
+        "Magnetic charging ring",
+        "Glossy scratch-resistant coat",
+        "Raised camera bar protection"
+      ],
+      "models": [
+        "Pixel 9",
+        "Pixel 9 Pro",
+        "Pixel 9 Pro XL",
+        "Pixel 9a",
+        "Pixel 10",
+        "Pixel 10 Pro",
+        "Pixel 10 Pro XL",
+        "Pixel 10a",
+        "Pixel 11",
+        "Pixel 11 Pro",
+        "Pixel 11 Pro XL"
+      ],
+      "variants": [
+        {
+          "name": "Sunset Coral",
+          "hex": "#e8583a",
+          "images": [
+            "/uploads/p31.jpg"
+          ],
+          "stock": true,
+          "qty": 16
+        },
+        {
+          "name": "Cotton Candy",
+          "hex": "#c9b3d9",
+          "images": [
+            "/uploads/p32.jpg"
+          ],
+          "stock": true,
+          "qty": 20
+        },
+        {
+          "name": "Aurora",
+          "hex": "#f0a33c",
+          "images": [
+            "/uploads/p33.jpg"
+          ],
+          "stock": true,
+          "qty": 7
+        }
+      ],
+      "featured": false,
+      "active": true,
+      "badge": "Trending",
+      "createdAt": 1789573846117,
+      "updatedAt": 1789573846116,
+      "discount": {
+        "type": "flat",
+        "value": 400,
+        "endsAt": ""
+      },
+      "categories": [
+        "fashion"
+      ],
+      "isNew": true
+    }
+  ],
+  "banners": [
+    {
+      "id": "brand1",
+      "style": "brand",
+      "title": "Unwrap Elegance.",
+      "subtitle": "Protect Your iPhone with Cravat Cases.",
+      "smallText": "Imported Designs. Quality Guaranteed.",
+      "buttonText": "Shop Now",
+      "buttonLink": "/shop",
+      "showIcon": true,
+      "active": true,
+      "image": "/uploads/cut-14.png",
+      "image2": "/uploads/cut-17.png",
+      "image3": "/uploads/cut-15.png",
+      "image4": "/uploads/p08.jpg",
+      "image5": "/uploads/p02.jpg",
+      "eyebrow": ""
+    },
+    {
+      "id": "b1",
+      "image": "/uploads/p20.jpg",
+      "eyebrow": "New collection",
+      "title": "Premium covers for iPhone",
+      "subtitle": "MagSafe, leather and carbon fibre covers for iPhone 13 to iPhone 18 Pro Max.",
+      "buttonText": "Shop iPhone covers",
+      "buttonLink": "/shop?brand=iphone",
+      "active": true,
+      "image2": "/uploads/p26.jpg",
+      "style": "photo"
+    },
+    {
+      "id": "b2",
+      "image": "/uploads/p35.jpg",
+      "eyebrow": "Up to 24% off",
+      "title": "MagSafe covers in 8 colours",
+      "subtitle": "Frosted finish, camera protection and strong magnets.",
+      "buttonText": "Shop offers",
+      "buttonLink": "/shop?sale=1",
+      "active": true,
+      "image2": "/uploads/p14.jpg",
+      "style": "photo"
+    },
+    {
+      "id": "b3",
+      "image": "/uploads/p10.jpg",
+      "eyebrow": "Google Pixel",
+      "title": "Covers for Pixel 7 to Pixel 11",
+      "subtitle": "Silicone, carbon fibre and lanyard covers for every Pixel.",
+      "buttonText": "Shop Pixel covers",
+      "buttonLink": "/shop?brand=pixel",
+      "active": true,
+      "image2": "/uploads/p09.jpg",
+      "style": "photo"
+    }
+  ],
+  "coupons": [
+    {
+      "code": "CRAVAT10",
+      "type": "percent",
+      "value": 10,
+      "minOrder": 1500,
+      "endsAt": "",
+      "active": true
+    }
+  ],
+  "orders": [],
+  "users": [],
+  "sessions": {},
+  "admin": {
+    "email": "cravatcases@gmail.com",
+    "salt": "e1e8b6acc479129405494f7f7c9322f2",
+    "hash": "63fdcfa85de3d69a84015523102239791d2e67e8ddcca0ada0836f03f109bc3b6a69d89a2455156cf3724f5bda24858c793a24afc95278ee1967204d6ca70c16"
+  }
+}

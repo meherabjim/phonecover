@@ -1,0 +1,97 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shop Cases — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div id="ph"></div>
+<main class="container">
+  <div class="catbar" id="catbar"></div>
+  <div class="listing">
+    <aside class="filters" id="filters" aria-label="Filters">
+      <div class="fclose"><b style="font-size:18px">Filters</b><button class="ibtn" id="fx" aria-label="Close filters"></button></div>
+      <div class="fgroup"><h5>Device</h5><div class="opts" id="f-brand"></div></div>
+      <div class="fgroup"><h5>Phone model</h5><select class="input" id="f-model"></select></div>
+      <div class="fgroup"><h5>Design</h5><div id="f-cat"></div></div>
+      <div class="fgroup"><h5>Colour</h5><div class="opts" id="f-color"></div></div>
+      <div class="fgroup"><h5>Price</h5><div id="f-price"></div></div>
+      <div class="fgroup"><h5>Offers</h5><label class="ck"><input type="checkbox" id="f-sale"> On sale</label><label class="ck"><input type="checkbox" id="f-new"> New arrivals</label><label class="ck"><input type="checkbox" id="f-stock"> In stock only</label></div>
+      <button class="btn block ftoggle" id="fdone" style="margin-top:16px">Show results</button>
+    </aside>
+    <section>
+      <div class="toolbar"><button class="btn ghost sm ftoggle" id="fopen"></button><span class="n" id="count"></span>
+        <select class="input" id="sort" aria-label="Sort"><option value="featured">Featured</option><option value="new">Newest</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="off">Biggest discount</option></select></div>
+      <div class="af" id="af"></div>
+      <div class="grid" id="grid"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+    </section>
+  </div>
+</main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const u=new URLSearchParams(location.search);
+  const pathCat=location.pathname.startsWith('/category/')?decodeURIComponent(location.pathname.split('/')[2]):'';
+  const pathPhone=location.pathname.startsWith('/phone/')?decodeURIComponent(location.pathname.split('/')[2]):'';
+  const st={brand:u.get('brand')||'',model:u.get('model')||'',cats:pathCat?[pathCat]:(u.get('category')||'').split(',').filter(Boolean),color:u.get('color')||'',price:u.get('price')||'',q:u.get('q')||'',sale:u.get('sale')==='1',inStock:u.get('stock')==='1',isNew:u.get('new')==='1',sort:'featured'};
+  const site0=await fetch('/api/site').then(r=>r.json());const fm0=pathPhone&&site0.brands.find(b=>b.models.some(m=>modelSlug(m.name)===pathPhone));
+  const site=await boot(st.sale?'sale':st.isNew?'new':st.cats.length?'cat':(fm0?.id||st.brand||'shop')),P=PRODUCTS;
+  if(pathPhone){const f=findModel(pathPhone);if(f){st.model=f.model.name;st.brand=f.brand.id;}}
+  $('#fx').innerHTML=ICON.x;$('#fopen').innerHTML=ICON.filter+' Filters';
+  const bands=[['0-1200','Under ৳1,200'],['1200-1500','৳1,200 – ৳1,500'],['1500-99999','৳1,500 & above']];
+  const match=(p,skip)=>(skip==='brand'||!st.brand||p.brand===st.brand)&&(skip==='model'||!st.model||p.models.includes(st.model))&&(skip==='cat'||!st.cats.length||st.cats.some(c=>p.categories?.includes(c)))
+    &&(skip==='color'||!st.color||p.variants.some(v=>family(v.hex)===st.color))&&(!st.sale||priceInfo(p).off)&&(!st.isNew||p.isNew)&&(!st.inStock||totalStock(p)>0)
+    &&(skip==='price'||!st.price||(()=>{const [a,b]=st.price.split('-').map(Number),f=priceInfo(p).final;return f>=a&&f<b;})())
+    &&(!st.q||(p.name+' '+p.description+' '+p.models.join(' ')+' '+p.variants.map(v=>v.name).join(' ')+' '+brandName(p.brand)+' '+(p.categories||[]).map(c=>catOf(c)?.name).join(' ')).toLowerCase().includes(st.q.toLowerCase()));
+  const header=()=>{
+    const c=st.cats.length===1&&catOf(st.cats[0]);const b=site.brands.find(x=>x.id===st.brand);
+    let t='All products',d=`Covers for ${site.brands.map(b=>b.name).join(' & ')} phones. Cash on delivery all over Bangladesh.`,img='',crumb='Shop',art='';
+    if(st.sale){t='Offers';d='Discounted covers — limited time.';}
+    else if(st.isNew){t='New arrivals';d='Our latest covers.';}
+    else if(c){t=c.name+' covers';d=c.description||d;img=c.image;crumb=`<a href="/shop">Shop</a> / ${esc(c.name)}`;}
+    else if(st.model){const b2=site.brands.find(x=>modelsOf(x).some(m=>m.name===st.model));const mo=modelsOf(b2).find(m=>m.name===st.model);t=st.model+' covers';d=`All covers that fit ${st.model}. Choose a design below.`;art=mo?modelVisual(mo,b2.id):'';crumb=`<a href="/shop?brand=${b2.id}">${esc(b2.name)}</a> / ${esc(st.model)}`;}
+    else if(b){t=b.name+' covers';d=b.tagline||d;img=b.image;}
+    else if(st.q){t=`“${st.q}”`;d='Search results';}
+    if(st.color&&!c)t=st.color+' '+t.toLowerCase();
+    document.title=t.replace(/[“”]/g,'')+' — '+site.settings.siteName;
+    $('#ph').innerHTML=`<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / ${typeof crumb==='string'&&crumb.includes('<')?crumb:esc(crumb)}</div><h1>${esc(t)}</h1><p>${esc(d)}</p></div>${art?`<div class="part">${art}</div>`:img?`<div class="pimg"><img src="${esc(img)}" alt=""></div>`:''}</div></div>`;
+  };
+  const draw=()=>{
+    header();
+    const cc=id=>P.filter(p=>p.categories?.includes(id)&&match(p,'cat')).length;
+    $('#catbar').innerHTML=`<a class="chip ${!st.cats.length?'on':''}" data-c="">All designs <span style="opacity:.6">${P.filter(p=>match(p,'cat')).length}</span></a>`+site.categories.filter(c=>cc(c.id)||st.cats.includes(c.id)).map(c=>`<a class="chip ${st.cats.includes(c.id)&&st.cats.length===1?'on':''}" data-c="${c.id}"><img src="${esc(c.image||site.settings.logo)}" alt="">${esc(c.name)} <span style="opacity:.6">${cc(c.id)}</span></a>`).join('');
+    $('#f-brand').innerHTML=[{id:'',name:'All'},...site.brands].map(b=>`<button class="chip ${st.brand===b.id?'on':''}" data-b="${b.id}">${esc(b.name)}</button>`).join('');
+    const models=(st.brand?site.brands.filter(b=>b.id===st.brand):site.brands).flatMap(b=>[...modelsOf(b)].reverse().map(m=>m.name));
+    if(st.model&&!models.includes(st.model))st.model='';
+    $('#f-model').innerHTML='<option value="">All models</option>'+models.map(m=>`<option ${m===st.model?'selected':''}>${esc(m)}</option>`).join('');
+    $('#f-cat').innerHTML=site.categories.map(c=>`<label class="ck"><input type="checkbox" value="${c.id}" ${st.cats.includes(c.id)?'checked':''}> ${esc(c.name)} <span>${P.filter(p=>p.categories?.includes(c.id)&&match(p,'cat')).length}</span></label>`).join('');
+    const fams=FAMILIES.filter(([f])=>P.some(p=>p.variants.some(v=>family(v.hex)===f)));
+    $('#f-color').innerHTML=fams.map(([f,h])=>`<button class="csw ${st.color===f?'on':''}" data-col="${f}" title="${f}" aria-label="${f}" style="background:${h}"></button>`).join('');
+    $('#f-price').innerHTML=bands.map(([v,l])=>`<label class="ck"><input type="radio" name="pr" value="${v}" ${st.price===v?'checked':''}> ${l} <span>${P.filter(p=>{const [a,b]=v.split('-').map(Number),f=priceInfo(p).final;return f>=a&&f<b&&match(p,'price');}).length}</span></label>`).join('');
+    $('#f-sale').checked=st.sale;$('#f-stock').checked=st.inStock;$('#f-new').checked=st.isNew;
+    let list=P.filter(p=>match(p));
+    list.sort((a,b)=>(totalStock(b)>0)-(totalStock(a)>0));const k={low:(a,b)=>priceInfo(a).final-priceInfo(b).final,high:(a,b)=>priceInfo(b).final-priceInfo(a).final,off:(a,b)=>priceInfo(b).off-priceInfo(a).off,new:(a,b)=>(b.isNew-a.isNew)||(b.createdAt-a.createdAt),featured:(a,b)=>(b.featured-a.featured)}[st.sort];list.sort((a,b)=>((totalStock(b)>0)-(totalStock(a)>0))||k(a,b));
+    // colour filter: show matching variant first
+    if(st.color)list=list.map(p=>({...p,variants:[...p.variants].sort((a,b)=>(family(b.hex)===st.color)-(family(a.hex)===st.color))}));
+    $('#count').textContent=`${list.length} product${list.length===1?'':'s'}`;
+    const chips=[st.brand&&['brand',brandName(st.brand)],st.model&&['model',st.model],...st.cats.map(c=>['cat:'+c,catOf(c)?.name]),st.color&&['color',st.color],st.price&&['price',bands.find(b=>b[0]===st.price)?.[1]],st.sale&&['sale','On sale'],st.isNew&&['isNew','New'],st.inStock&&['inStock','In stock'],st.q&&['q','“'+st.q+'”']].filter(Boolean);
+    $('#af').innerHTML=chips.length?chips.map(([k,l])=>`<button data-x="${esc(k)}">${esc(l)} ✕</button>`).join('')+'<button data-x="all" style="background:none;border:none;text-decoration:underline">Clear all</button>':'';
+    $('#grid').innerHTML=list.length?list.map(productCard).join(''):`<div class="empty" style="grid-column:1/-1"><h3>No products found</h3><p>Try removing a filter, or ask us on WhatsApp — we may have it in stock.</p><p style="margin-top:20px"><a class="btn wa" href="https://wa.me/${site.settings.whatsapp}" target="_blank" rel="noopener">${ICON.wa} Ask on WhatsApp</a></p></div>`;
+    const q=new URLSearchParams();if(st.brand)q.set('brand',st.brand);if(st.model)q.set('model',st.model);if(st.cats.length&&!(pathCat&&st.cats.length===1&&st.cats[0]===pathCat))q.set('category',st.cats.join(','));
+    if(st.color)q.set('color',st.color);if(st.price)q.set('price',st.price);if(st.sale)q.set('sale','1');if(st.isNew)q.set('new','1');if(st.inStock)q.set('stock','1');if(st.q)q.set('q',st.q);
+    const onPhone=pathPhone&&st.model&&modelSlug(st.model)===pathPhone;if(onPhone){q.delete('model');q.delete('brand');}
+    const base=onPhone?location.pathname:pathCat&&st.cats.length===1&&st.cats[0]===pathCat?location.pathname:'/shop';history.replaceState(null,'',base+(q+''?'?'+q:''));
+  };
+  document.addEventListener('click',e=>{
+    const t=e.target.closest('[data-c],[data-b],[data-col],[data-x]');if(!t||!t.closest('main'))return;e.preventDefault();
+    if(t.dataset.c!==undefined)st.cats=t.dataset.c?[t.dataset.c]:[];
+    if(t.dataset.b!==undefined)st.brand=t.dataset.b;
+    if(t.dataset.col)st.color=st.color===t.dataset.col?'':t.dataset.col;
+    if(t.dataset.x){const x=t.dataset.x;if(x==='all')Object.assign(st,{brand:'',model:'',cats:[],color:'',price:'',sale:false,isNew:false,inStock:false,q:''});else if(x.startsWith('cat:'))st.cats=st.cats.filter(c=>c!==x.slice(4));else st[x]=typeof st[x]==='boolean'?false:'';}
+    draw();
+  });
+  $('#filters').addEventListener('change',e=>{const t=e.target;
+    if(t.id==='f-model')st.model=t.value;else if(t.id==='f-sale')st.sale=t.checked;else if(t.id==='f-new')st.isNew=t.checked;else if(t.id==='f-stock')st.inStock=t.checked;else if(t.name==='pr')st.price=t.value;
+    else if(t.closest('#f-cat'))st.cats=$$('#f-cat input:checked').map(i=>i.value);draw();});
+  $('#sort').onchange=e=>{st.sort=e.target.value;draw();};
+  const fl=$('#filters');$('#fopen').onclick=()=>fl.classList.add('open');$('#fx').onclick=$('#fdone').onclick=()=>fl.classList.remove('open');
+  draw();
+})();
+</script></body></html>

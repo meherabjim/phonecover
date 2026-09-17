@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cravat Cases</title><meta name="description" content="Buy iPhone & Google Pixel covers in Bangladesh — MagSafe, leather, carbon fibre & silicone cases. Cash on delivery, order on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / <span id="crumb"></span></div><h1 id="pt"></h1></div></div></div>
+<main class="container"><article class="page-box prose" id="pc"></article></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  const site=await boot('page');const slug=location.pathname.split('/').pop();const pg=(site.settings.pages||{})[slug];
+  if(!pg||pg.enabled===false){$('#pt').textContent='Page not found';$('#pc').innerHTML='<p>This page does not exist. <a class="ul" href="/">Go to home page</a></p>';return;}
+  document.title=pg.title+' — '+site.settings.siteName;$('#pt').textContent=pg.title;$('#crumb').textContent=pg.title;
+  // simple formatting: "## Heading", "- bullet", blank line = new paragraph
+  let html='',para=[],list=[];const flush=()=>{if(para.length){html+=`<p>${para.map(esc).join('<br>')}</p>`;para=[];}if(list.length){html+=`<ul>${list.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`;list=[];}};
+  String(pg.body||'').replace(/\r/g,'').split('\n').forEach(l=>{
+    if(!l.trim())return flush();
+    if(/^#{1,3}\s+/.test(l)){flush();html+=`<h3>${esc(l.replace(/^#{1,3}\s+/,''))}</h3>`;return;}
+    if(/^\s*[-*•]\s+/.test(l)){if(para.length){const t=list;list=[];flush();list=t;}list.push(l.replace(/^\s*[-*•]\s+/,''));return;}
+    if(list.length)flush();para.push(l);});
+  flush();
+  $('#pc').innerHTML=html+`<p class="muted" style="margin-top:20px;font-size:13px">Questions? WhatsApp <a class="ul" href="https://wa.me/${site.settings.whatsapp}" target="_blank" rel="noopener">${esc(site.settings.phone)}</a></p>`;
+})();
+</script></body></html>

@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Track your order — Cravat Cases</title><meta name="description" content="Buy iPhone & Google Pixel covers in Bangladesh — MagSafe, leather, carbon fibre & silicone cases. Cash on delivery, order on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png"><link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / Track order</div><h1>Track your order</h1><p>Enter your order number and mobile number to see the latest status.</p></div></div></div>
+<main class="container"><div class="track">
+  <form class="box" id="tf"><div class="form" style="margin:0">
+    <div><label for="tno">Order number</label><input class="input" id="tno" name="no" placeholder="e.g. CC1005" required></div>
+    <div><label for="tph">Mobile number</label><input class="input" id="tph" name="phone" type="tel" inputmode="tel" placeholder="01XXXXXXXXX" required></div>
+    <div class="full"><button class="btn block lg">Track order</button></div></div></form>
+  <div id="res"></div>
+</div></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  await boot('track');const q=new URLSearchParams(location.search);
+  $('#tno').value=q.get('no')||'';$('#tph').value=q.get('phone')||(Auth.me?.user?.phone||'');
+  const steps=['new','confirmed','shipped','delivered'],labels={new:'Order placed',confirmed:'Confirmed',shipped:'On the way',delivered:'Delivered'};
+  const run=async()=>{
+    const no=$('#tno').value.trim(),phone=$('#tph').value.trim();if(!no||!phone)return;
+    $('#res').innerHTML='<p class="muted" style="text-align:center">Checking…</p>';
+    const r=await fetch(`/api/track?no=${encodeURIComponent(no)}&phone=${encodeURIComponent(phone)}`);const o=await r.json();
+    if(!r.ok){$('#res').innerHTML=`<div class="box" style="text-align:center"><h3>Order not found</h3><p class="muted">Please check the order number and the mobile number used for the order, or <a class="ul" href="https://wa.me/${SITE.settings.whatsapp}" target="_blank" rel="noopener">ask us on WhatsApp</a>.</p></div>`;return;}
+    const idx=steps.indexOf(o.status);
+    $('#res').innerHTML=`<div class="box"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><h3 style="margin:0">Order ${esc(o.no)}</h3><span class="st ${o.status}">${esc(o.status==='new'?'placed':o.status)}</span></div>
+      <p class="muted" style="font-size:13.5px">Placed on ${new Date(o.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</p>
+      ${o.status==='cancelled'?'<p style="color:var(--sale);margin-top:12px">This order was cancelled. Contact us on WhatsApp if this is a mistake.</p>':`<div class="timeline">${steps.map((s2,i)=>`<div class="${i<=idx?'ok':''}"><i>${i<=idx?'✓':i+1}</i>${labels[s2]}</div>`).join('')}</div>`}
+      ${o.items.map(i=>`<div class="ord it" style="border:none;padding:6px 0;margin:0"><img src="${esc(i.image||SITE.settings.logo)}" alt=""><div><b style="font-weight:500">${esc(i.name)}</b><br><span class="muted">${esc(i.model)} · ${esc(i.color)} × ${i.qty}</span></div></div>`).join('')}
+      <div class="osum" style="margin-top:12px"><div class="r"><span>Delivery</span><span>${money(o.delivery)}</span></div><div class="r t"><span>Total</span><span>${money(o.total)}</span></div></div></div>`;
+    history.replaceState(null,'',`/track?no=${encodeURIComponent(no)}&phone=${encodeURIComponent(phone)}`);
+  };
+  $('#tf').onsubmit=e=>{e.preventDefault();run();};
+  if(q.get('no')&&$('#tph').value)run();
+})();
+</script></body></html>

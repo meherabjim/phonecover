@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My account — Cravat Cases</title><meta name="description" content="Premium iPhone & Google Pixel cases in Bangladesh — MagSafe, leather, aramid fibre & silicone. Cash on delivery, order easily on WhatsApp.">
+<meta name="theme-color" content="#0E1B33"><link rel="icon" href="/img/favicon.png"><link rel="manifest" href="/manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/css/style.css?v=7"></head><body>
+<div class="phead"><div class="container"><div><div class="crumbs"><a href="/">Home</a> / My account</div><h1 id="hi">My account</h1></div></div></div>
+<main class="container acct" id="app"></main>
+<script src="/js/common.js?v=7"></script>
+<script>
+(async()=>{
+  await boot('account');
+  if(Auth.me.role==='admin')return location.href='/admin';
+  if(Auth.me.role!=='user')return location.href='/login?next=/account';
+  let u=Auth.me.user,tab=location.hash==='#profile'?'profile':'orders',orders=[];
+  $('#hi').textContent='Hello, '+u.name.split(' ')[0];
+  try{orders=await fetch('/api/account/orders',{headers:Auth.headers()}).then(r=>r.json());}catch{}
+  const s=SITE.settings;
+  const draw=()=>{
+    $('#app').innerHTML=`<nav aria-label="Account"><button class="${tab==='orders'?'on':''}" data-t="orders">My orders (${orders.length})</button><button class="${tab==='profile'?'on':''}" data-t="profile">Profile & address</button><button class="${tab==='password'?'on':''}" data-t="password">Change password</button><button data-logout>Log out</button></nav>
+    <section>${tab==='orders'?(orders.length?orders.map(o=>`<div class="ord"><div class="top"><div><b>${o.no}</b> · <span class="muted">${new Date(o.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span></div><div><span class="st ${o.status}">${o.status}</span> <b style="margin-left:8px">${money(o.total)}</b></div></div>
+        ${o.items.map(i=>`<div class="it"><img src="${esc(i.image||s.logo)}" alt=""><div><a href="/product/${i.slug}" style="font-weight:500">${esc(i.name)}</a><br><span class="muted">${esc(i.model)} · ${esc(i.color)} × ${i.qty}</span></div></div>`).join('')}</div>`).join('')
+        :`<div class="box" style="text-align:center;padding:40px"><h3>No orders yet</h3><p class="muted">Orders you send on WhatsApp while signed in appear here.</p><p style="margin-top:16px"><a class="btn" href="/shop">Start shopping</a></p></div>`)
+      :tab==='profile'?`<form class="box" id="pf"><h3>Profile & delivery address</h3><p class="muted" style="font-size:14px;margin:-6px 0 14px">Saved details fill your order form automatically.</p>
+        <div class="form" style="margin:0"><div><label>Name</label><input class="input" name="name" value="${esc(u.name)}"></div><div><label>Mobile</label><input class="input" name="phone" value="${esc(u.phone)}"></div>
+        <div class="full"><label>Email <small>(optional)</small></label><input class="input" name="email" type="email" value="${esc(u.email||'')}"></div>
+        <div class="full"><label>Delivery area</label><div class="seg"><label><input type="radio" name="area" value="inside" ${u.area!=='outside'?'checked':''}> Inside Dhaka</label><label><input type="radio" name="area" value="outside" ${u.area==='outside'?'checked':''}> Outside Dhaka</label></div></div>
+        <div class="full"><label>Full address</label><textarea class="input" name="address" rows="3">${esc(u.address||'')}</textarea></div>
+        <div class="full"><button class="btn">Save changes</button></div></div></form>`
+      :`<form class="box" id="pw" style="max-width:460px"><h3>Change password</h3><div class="fld"><label>Current password</label><input class="input" name="currentPassword" type="password" autocomplete="current-password"></div><div class="fld" style="margin-top:10px"><label>New password</label><input class="input" name="newPassword" type="password" autocomplete="new-password"></div><button class="btn" style="margin-top:14px">Update password</button></form>`}</section>`;
+    const f=$('#pf')||$('#pw');
+    if(f)f.onsubmit=async e=>{e.preventDefault();const r=await fetch('/api/account',{method:'PUT',headers:Auth.headers(),body:JSON.stringify(Object.fromEntries(new FormData(f)))});const j=await r.json();
+      if(!r.ok)return toast(j.error);u=Auth.me.user=j.user;toast('Saved ✓');if(f.id==='pw')f.reset();};
+  };
+  $('#app').addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t){tab=t.dataset.t;draw();}});
+  draw();
+})();
+</script></body></html>
