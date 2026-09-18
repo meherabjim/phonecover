@@ -1,0 +1,11 @@
+# Live data — never commit. Holds the admin password hash, customers, orders.
+data/db.json
+data/db.json.tmp
+
+# Photos the admin uploads on the live site (the starter catalogue photos are tracked)
+public/uploads/1*
+
+node_modules/
+.env
+*.log
+.DS_Store

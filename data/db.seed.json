@@ -1378,10 +1378,5 @@
   ],
   "orders": [],
   "users": [],
-  "sessions": {},
-  "admin": {
-    "email": "cravatcases@gmail.com",
-    "salt": "e1e8b6acc479129405494f7f7c9322f2",
-    "hash": "63fdcfa85de3d69a84015523102239791d2e67e8ddcca0ada0836f03f109bc3b6a69d89a2455156cf3724f5bda24858c793a24afc95278ee1967204d6ca70c16"
-  }
+  "sessions": {}
 }

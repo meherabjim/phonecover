@@ -177,13 +177,14 @@ function openOrder({ items, coupon = null, fromCart = false }) {
     if (!phone) { const inp = $('#o-phone', m); inp.classList.add('bad'); $('#o-perr', m).textContent = 'Please enter a valid 11-digit mobile number (01XXXXXXXXX)'; inp.focus(); inp.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     const c = { name: f.name.trim(), phone, address: f.address.trim(), note: f.note.trim(), area };
     store.set('cc_customer', { name: c.name, phone: c.phone, address: c.address, area });
-    const total = sub - disc + del;
+    let total = sub - disc + del, sb = sub, dc = disc, dl = del;
     const win = window.open('', '_blank'); // open now so mobile browsers don't block it
     let no = '';
-    try { const ctl = new AbortController(); setTimeout(() => ctl.abort(), 4000); const r = await fetch('/api/orders', { method: 'POST', headers: Auth.headers(), signal: ctl.signal, body: JSON.stringify({ ...c, items, coupon: coupon?.code || '', discount: disc, delivery: del, total }) }); const j = await r.json(); if (r.status === 400) { win?.close(); return toast(j.error || 'Please check your details'); } no = j.no || ''; } catch {}
+    // the server recalculates every price — use its numbers so the WhatsApp message matches the saved order
+    try { const ctl = new AbortController(); setTimeout(() => ctl.abort(), 4000); const r = await fetch('/api/orders', { method: 'POST', headers: Auth.headers(), signal: ctl.signal, body: JSON.stringify({ ...c, items, coupon: coupon?.code || '' }) }); const j = await r.json(); if (r.status === 400) { win?.close(); return toast(j.error || 'Please check your details'); } no = j.no || ''; if (typeof j.total === 'number') { sb = j.subtotal; dc = j.discount; dl = j.delivery; total = j.total; if (Array.isArray(j.items) && j.items.length) items = j.items; } } catch {}
     const lines = items.map((i, n) => `${n + 1}. *${i.name}*\n   Model: ${i.model} | Colour: ${i.color} | Qty: ${i.qty}\n   Price: ${money(i.price * i.qty)}\n   ${location.origin}/product/${i.slug}`).join('\n\n');
     const who = [c.name && `Name: ${c.name}`, c.phone && `Phone: ${c.phone}`, c.address && `Address: ${c.address}`, c.note && `Note: ${c.note}`].filter(Boolean).join('\n');
-    const msg = `Hello ${s.siteName}! I'd like to order${no ? ` (Order no: ${no})` : ''}:\n\n${lines}\n\nSubtotal: ${money(sub)}${disc ? `\nCoupon ${coupon.code}: −${money(disc)}` : ''}\nDelivery (${area === 'inside' ? 'Inside' : 'Outside'} Dhaka): ${money(del)}\n*Total: ${money(total)}* (Cash on delivery)${who ? `\n\n${who}` : ''}`;
+    const msg = `Hello ${s.siteName}! I'd like to order${no ? ` (Order no: ${no})` : ''}:\n\n${lines}\n\nSubtotal: ${money(sb)}${dc ? `\nCoupon ${coupon.code}: −${money(dc)}` : ''}\nDelivery (${area === 'inside' ? 'Inside' : 'Outside'} Dhaka): ${money(dl)}\n*Total: ${money(total)}* (Cash on delivery)${who ? `\n\n${who}` : ''}`;
     if (win) win.location.href = waLink(msg); else location.href = waLink(msg);
     if (fromCart) Cart.set([]);
     // confirmation screen

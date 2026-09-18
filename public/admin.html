@@ -79,7 +79,7 @@ function render(){
   document.getElementById('root').innerHTML=`<div class="shell"><aside class="side" id="side"><a class="logo" href="/admin"><img src="${esc(S.site.settings.logo||(S.site?.settings.logo||'/img/logo.png'))}" alt=""><span class="wm"><b>${esc((S.site.settings.siteName||'').split(' ')[0].toUpperCase())}</b><small>Admin panel</small></span></a>
     <nav class="snav" id="snav">${TABS.map(t=>typeof t==='string'?`<div class="grp">${t}</div>`:t).map(t=>typeof t==='string'?t:(([k,l,i])=>`<button class="${S.tab===k?'on':''}" data-tab="${k}">${IC[i]} ${l}${k==='orders'&&newOrders?`<span class="pill">${newOrders}</span>`:''}</button>`)(t)).join('')}</nav>
     <div class="bottom"><div style="font-size:12px;color:#8e97aa;padding:0 14px 8px;overflow:hidden;text-overflow:ellipsis">${esc(S.site.admin?.email||'')}</div><button type="button" onclick="location.href='/'">${IC.eye} Back to website</button><button type="button" onclick="logout()">${IC.out} Log out</button></div></aside>
-    <div class="sshade" onclick="$('#side').classList.remove('open');document.body.classList.remove('sopen')"></div><main class="mainA"><div class="mtop"><button type="button" class="ibtn" onclick="$('#side').classList.add('open');document.body.classList.add('sopen')" aria-label="Menu">${ICON.menu}</button><b>Cravat Admin</b><a class="btn ghost sm" href="/" style="margin-left:auto">${IC.eye} Website</a><button type="button" class="btn ghost sm" onclick="logout()">${IC.out}</button></div><div id="view"></div></main></div>`;
+    <div class="sshade" onclick="$('#side').classList.remove('open');document.body.classList.remove('sopen')"></div><main class="mainA"><div class="mtop"><button type="button" class="ibtn" onclick="$('#side').classList.add('open');document.body.classList.add('sopen')" aria-label="Menu">${ICON.menu}</button><b>Cravat Admin</b><a class="btn ghost sm" href="/" style="margin-left:auto">${IC.eye} Website</a><button type="button" class="btn ghost sm" onclick="logout()">${IC.out}</button></div>${S.site.admin?.mustChange?`<div style="background:#fff4e5;border:1px solid #ffb74d;border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:14px"><b>Set your admin password.</b> The panel is read-only until you replace the starter password. <button class="btn sm" data-tab="account" style="margin-left:8px">Go to Account</button></div>`:''}<div id="view"></div></main></div>`;
   $('#side').onclick=e=>{const b=e.target.closest('[data-tab]');if(b){document.body.classList.remove('sopen');S.tab=b.dataset.tab;S.edit=null;history.replaceState(null,'','#'+S.tab);render();}};
   document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('#view input:not([type=checkbox])'))e.preventDefault();},{once:true});
   (({dashboard,neworder,orders,products:S.edit?editor:productList,categories,banners,coupons,customers,brands,settings,account,menu:menuEditor,pages:pagesEditor})[S.tab]||dashboard)();
@@ -457,11 +457,16 @@ function account(){
   $('#view').innerHTML=`<div class="top"><div><span class="eyebrow">Security</span><h1>Account</h1></div></div>
   <div class="panel" style="max-width:520px"><h3>Admin login</h3>
    <div class="fld"><label>Login email</label><input class="input" id="ae" type="email" value="${esc(S.site.admin?.email||'')}"></div>
-   <p class="hint" style="margin:0 0 14px">Use this email and password on the website’s Sign in page — it opens the admin panel.</p><div class="fld"><label>New password <small>(leave empty to keep current)</small></label><input class="input" id="ap" type="password" autocomplete="new-password"></div>
+   <p class="hint" style="margin:0 0 14px">Use this email and password on the website’s Sign in page — it opens the admin panel.</p>
+   <div class="fld"><label>Current password</label><input class="input" id="apc" type="password" autocomplete="current-password"></div>
+   <div class="fld"><label>New password <small>(at least 8 characters — leave empty to keep current)</small></label><input class="input" id="ap" type="password" autocomplete="new-password"></div>
    <div class="fld"><label>Confirm password</label><input class="input" id="ap2" type="password" autocomplete="new-password"></div>
    <button class="btn" id="savep">Update login</button></div>`;
   $('#savep').onclick=async()=>{if($('#ap').value!==$('#ap2').value)return flash('Passwords do not match');
-    try{await api('/api/admin/password',{method:'POST',body:JSON.stringify({email:$('#ae').value,password:$('#ap').value})});S.site.admin.email=$('#ae').value.trim().toLowerCase();flash('Login updated ✓');$('#ap').value=$('#ap2').value='';}catch(e){flash(e.message);}};
+    try{const r=await api('/api/admin/password',{method:'POST',body:JSON.stringify({email:$('#ae').value,password:$('#ap').value,currentPassword:$('#apc').value})});
+      $('#apc').value=$('#ap').value=$('#ap2').value='';flash('Login updated ✓');
+      if(r&&r.token){store.set('cc_token',r.token);setTimeout(()=>location.reload(),700);return;}
+      S.site.admin.email=$('#ae').value.trim().toLowerCase();}catch(e){flash(e.message);}};
 }
 TOKEN?load():renderLogin();
 window.addEventListener('hashchange',()=>{const t=location.hash.slice(1);if(t&&t!==S.tab&&S.site){S.tab=t;S.edit=null;render();}});

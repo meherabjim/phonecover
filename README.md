@@ -9,9 +9,22 @@ Pure Node.js — **no `npm install` needed**.
 - Computer: http://localhost:3000
 - Phone on the same Wi-Fi: the `192.168.x.x:3000` address printed in the terminal
 
-## Admin
-- Sign in at **/login** → email **cravatcases@gmail.com**, password **cravat@2026** → opens **/admin**
-- Change the password first (Admin → Login & password). The dashboard shows a "Getting started" checklist.
+## Admin password — set it before the site goes live
+
+**Easiest way (recommended on cPanel).** cPanel → *Setup Node.js App* → open the app → **Environment variables** → **Add Variable**:
+
+      Name:  ADMIN_PASSWORD
+      Value: your own password (8+ characters)
+
+Click **Save**, then **Restart**. Sign in at **/login** with `cravatcases@gmail.com` and that password — the panel is fully usable straight away. You can delete the variable afterwards; the password stays.
+
+**Other way.** Start the app without that variable and it prints a one-time password in the terminal (on your own computer) or in the cPanel app log:
+
+      ADMIN LOGIN → cravatcases@gmail.com / XXXXXXXX
+
+Sign in with it, then Admin → **Account** → set your own password. Until you do, the panel is **read-only** and a yellow bar reminds you. Saving a new password signs out every other device.
+
+**Forgot it?** File Manager → open `data/db.json` → delete the `"admin": { ... }` block → save → Restart, then use either way above.
 
 ---
 
@@ -27,7 +40,36 @@ Pure Node.js — **no `npm install` needed**.
    - Click **Create**. (No "Run NPM Install" needed — there are no packages.)
 4. Click **Start / Restart**. Open your domain — the website is live.
 5. cPanel → **SSL/TLS Status** → run **AutoSSL** so the site opens with **https://**.
-6. Log in to /admin and change the password.
+6. Set the admin password — see **Admin password** above.
+7. Once https works, add `FORCE_HTTPS=1` in *Setup Node.js App → Environment variables* and restart.
+
+### Security settings (Setup Node.js App → Environment variables — all optional)
+| Variable | Default | What it does |
+|---|---|---|
+| `ADMIN_PASSWORD` | random | Your own admin password (8+ chars) — see the Admin section above |
+| `FORCE_HTTPS` | off | Redirects http → https |
+| `SESSION_DAYS` | `7` | How long a login lasts |
+| `TRUST_PROXY` | auto | `1` behind Nginx/Apache, `0` if the app faces the internet directly |
+| `SITE_URL` | — | e.g. `https://cravatcases.com` — used for sitemap and WhatsApp link previews |
+
+Built in already: login limited per device *and* per account, security headers (CSP, nosniff, clickjacking, HSTS), prices recalculated on the server, uploaded photos checked to be real images, admin password change requires the current password.
+
+## Git
+
+`data/db.json` is in `.gitignore` and **must stay out of git** — it holds the admin password hash, your customers' names, phones and addresses, and every order. Once something is committed it stays in the history forever, even if the file is deleted later.
+
+What is committed instead is `data/db.seed.json` — the starter catalogue with no password, no orders, no customers. On a machine where `data/db.json` does not exist yet, the server copies the seed into place on first start.
+
+So on the live server the admin password comes from the **`ADMIN_PASSWORD`** environment variable (see above), not from git.
+
+If `data/db.json` was committed before, stop tracking it:
+
+    git rm --cached data/db.json
+    git commit -m "Stop tracking live data"
+
+Changed the product list and want it in the repo? Refresh the seed (strips password, orders and customers):
+
+    node -e "const f=require('fs'),d=JSON.parse(f.readFileSync('data/db.json','utf8'));delete d.admin;delete d.counters;d.orders=[];d.users=[];d.sessions={};f.writeFileSync('data/db.seed.json',JSON.stringify(d,null,2))"
 
 **Updating later:** stop/restart is done from *Setup Node.js App*. When you upload new files, **do not overwrite `data/db.json` and `public/uploads/`** — they contain your products, orders, customers and photos.
 

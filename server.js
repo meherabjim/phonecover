@@ -6,6 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
+// security config (all overridable with environment variables)
+const NUMERIC_PORT = /^\d+$/.test(String(PORT));
+const TRUST_PROXY = process.env.TRUST_PROXY ? process.env.TRUST_PROXY === '1' : !NUMERIC_PORT; // cPanel/Passenger sits behind Apache
+const SESSION_DAYS = Number(process.env.SESSION_DAYS) || 7;
+const FORCE_HTTPS = process.env.FORCE_HTTPS === '1';
 const ROOT = __dirname;
 const PUB = path.join(ROOT, 'public');
 const DB_FILE = path.join(ROOT, 'data', 'db.json');
@@ -13,6 +18,8 @@ const UPLOADS = path.join(PUB, 'uploads');
 fs.mkdirSync(UPLOADS, { recursive: true });
 
 // ---------- JSON database ----------
+// db.json is never committed to git, so a fresh clone starts from the seed catalogue
+if (!fs.existsSync(DB_FILE)) fs.copyFileSync(path.join(ROOT, 'data', 'db.seed.json'), DB_FILE);
 let db = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
 let saveTimer = null;
 function save() { // debounced atomic write
@@ -33,9 +40,18 @@ db.settings.logo = db.settings.logo || '/img/logo.png';
 if (db.settings.showWordmark === undefined) db.settings.showWordmark = true;
 db.products.forEach(p => p.variants.forEach(v => { if (v.qty === undefined) v.qty = v.stock === false ? 0 : 10; v.stock = v.qty > 0; }));
 db.brands.forEach(b => { b.models = (b.models || []).map(m => typeof m === 'string' ? { name: m, image: '', active: true } : m); });
-if (!db.admin) {
+db.counters = db.counters || { order: db.orders.reduce((m, o) => Math.max(m, parseInt(String(o.no).replace(/\D/g, '')) || 0), 1000) };
+const nextOrderNo = () => 'CC' + (++db.counters.order);
+// admin bootstrap — a random password is generated unless ADMIN_PASSWORD is set; it must be changed on first login
+let firstRunPw = '';
+const envPw = process.env.ADMIN_PASSWORD;
+// ADMIN_PASSWORD still works if it is added later, as long as the starter password was never replaced in the panel
+if (!db.admin || (envPw && db.admin.mustChange) || hashPw('cravat@2026', db.admin.salt) === db.admin.hash) {
   const salt = crypto.randomBytes(16).toString('hex');
-  db.admin = { email: (process.env.ADMIN_EMAIL || db.settings.adminEmail || 'admin@example.com').toLowerCase(), salt, hash: hashPw(process.env.ADMIN_PASSWORD || 'cravat@2026', salt) };
+  firstRunPw = envPw || crypto.randomBytes(6).toString('base64url');
+  // a password you chose yourself is ready to use; a generated one must be replaced in the panel
+  const chosen = !!envPw && envPw.length >= 8;
+  db.admin = { email: (process.env.ADMIN_EMAIL || db.admin?.email || db.settings.adminEmail || 'admin@example.com').toLowerCase(), salt, hash: hashPw(firstRunPw, salt), mustChange: !chosen };
 }
 save();
 
@@ -43,7 +59,7 @@ save();
 const DAY = 864e5;
 function newSession(role, userId) {
   const token = crypto.randomBytes(32).toString('hex');
-  db.sessions[sha(token)] = { role, userId: userId || null, exp: Date.now() + 30 * DAY };
+  db.sessions[sha(token)] = { role, userId: userId || null, exp: Date.now() + SESSION_DAYS * DAY };
   for (const [k, s] of Object.entries(db.sessions)) if (s.exp < Date.now()) delete db.sessions[k];
   save(); return token;
 }
@@ -55,14 +71,25 @@ function session(req) {
   if (s.role === 'user' && !db.users.some(u => u.id === s.userId)) return null;
   return { ...s, key: sha(t) };
 }
-function admin(req, res, next) { const s = session(req); if (s?.role !== 'admin') return res.status(401).json({ error: 'Please log in as admin' }); next(); }
+const dropSessions = test => { for (const [k, s] of Object.entries(db.sessions)) if (test(s, k)) delete db.sessions[k]; };
+function admin(req, res, next) {
+  const s = session(req); if (s?.role !== 'admin') return res.status(401).json({ error: 'Please log in as admin' });
+  // until the starter password is replaced, the panel is read-only
+  if (db.admin.mustChange && req.method !== 'GET' && req.url !== '/api/admin/password') return res.status(403).json({ error: 'Set a new admin password first (Account → Admin login)', mustChange: true });
+  next();
+}
 function member(req, res, next) { const s = session(req); if (s?.role !== 'user') return res.status(401).json({ error: 'Please log in' }); req.user = db.users.find(u => u.id === s.userId); next(); }
 const publicUser = u => u && ({ id: u.id, name: u.name, phone: u.phone, email: u.email, address: u.address || '', area: u.area || 'inside', createdAt: u.createdAt });
 
-// login throttling
-const fails = new Map();
-function throttled(req) { const t = fails.get(req.ip); return t && t.n >= 8 && Date.now() - t.t < 15 * 60 * 1000; }
-function fail(req) { const t = fails.get(req.ip) || { n: 0 }; fails.set(req.ip, { n: t.n + 1, t: Date.now() }); }
+// ---------- rate limiting (fixed window per IP, self-cleaning) ----------
+const hits = new Map();
+function limit(req, bucket, max, windowMs, key) {
+  const k = bucket + '|' + (key ?? req.ip), now = Date.now(), h = hits.get(k);
+  if (!h || now - h.t > windowMs) { hits.set(k, { n: 1, t: now }); return false; }
+  h.n++; return h.n > max;
+}
+const clearLimit = (req, bucket, key) => hits.delete(bucket + '|' + (key ?? req.ip));
+setInterval(() => { const now = Date.now(); for (const [k, h] of hits) if (now - h.t > 36e5) hits.delete(k); }, 6e5).unref();
 
 // ---------- router ----------
 const routes = [];
@@ -71,7 +98,9 @@ const on = (method, pattern, ...handlers) => {
   routes.push({ method, re, keys, handlers });
 };
 const live = endsAt => !endsAt || new Date(endsAt + 'T23:59:59') >= new Date();
-const origin = req => `${String(req.headers['x-forwarded-proto'] || 'http').split(',')[0]}://${req.headers['x-forwarded-host'] || req.headers.host}`;
+// the public address: a configured site URL wins, so a forged Host header cannot poison links
+const origin = req => String(db.settings.siteUrl || process.env.SITE_URL || '').replace(/\/+$/, '') ||
+  `${String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim()}://${String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim().replace(/[^\w.:-]/g, '')}`;
 const finalPrice = p => { const d = p.discount || {}; if (!d.value || !live(d.endsAt)) return p.price; return Math.max(0, Math.round(d.type === 'percent' ? p.price * (1 - d.value / 100) : p.price - d.value)); };
 
 // ---------- public API ----------
@@ -82,10 +111,8 @@ on('GET', '/api/site', (req, res) => res.json({
   banners: db.banners.filter(b => b.active !== false),
   hasCoupons: db.coupons.some(c => c.active !== false && live(c.endsAt))
 }));
-const trackHits = new Map();
 on('GET', '/api/track', (req, res) => {
-  const t = trackHits.get(req.ip) || { n: 0, t: Date.now() }; if (Date.now() - t.t > 600000) { t.n = 0; t.t = Date.now(); } t.n++; trackHits.set(req.ip, t);
-  if (t.n > 30) return res.status(429).json({ error: 'Too many requests, try again later' });
+  if (limit(req, 'track', 20, 6e5)) return res.status(429).json({ error: 'Too many requests, try again later' });
   const u = new URL(req.url, 'http://x'), no = str(u.searchParams.get('no'), 20).toUpperCase(), phone = normPhone(u.searchParams.get('phone'));
   const o = db.orders.find(x => x.no.toUpperCase() === no && phone.length === 11 && normPhone(x.customer?.phone) === phone);
   if (!o) return res.status(404).json({ error: 'Order not found' });
@@ -101,7 +128,9 @@ on('GET', '/api/products/:slug', (req, res) => {
   const p = db.products.find(x => x.slug === req.params.slug && x.active !== false);
   p ? res.json(p) : res.status(404).json({ error: 'Not found' });
 });
+const findCoupon = code => db.coupons.find(x => x.code.toUpperCase() === str(code, 40).toUpperCase() && x.active !== false && live(x.endsAt));
 on('POST', '/api/coupon', (req, res) => {
+  if (limit(req, 'coupon', 20, 6e5)) return res.status(429).json({ error: 'Too many attempts, try again later' });
   const code = str(req.body?.code, 40).toUpperCase(), subtotal = Number(req.body?.subtotal) || 0;
   const c = db.coupons.find(x => x.code.toUpperCase() === code && x.active !== false && live(x.endsAt));
   if (!c) return res.status(404).json({ error: 'Invalid or expired coupon' });
@@ -112,6 +141,7 @@ on('POST', '/api/coupon', (req, res) => {
 
 // ---------- accounts (one login for customers and admin) ----------
 on('POST', '/api/auth/register', (req, res) => {
+  if (limit(req, 'reg', 5, 36e5)) return res.status(429).json({ error: 'Too many accounts created. Try again later.' });
   const b = req.body || {};
   const name = str(b.name, 80), phone = normPhone(b.phone), email = str(b.email, 120).toLowerCase(), password = String(b.password || '');
   if (!name) return res.status(400).json({ error: 'Please enter your name' });
@@ -126,20 +156,21 @@ on('POST', '/api/auth/register', (req, res) => {
   res.json({ token: newSession('user', u.id), role: 'user', user: publicUser(u) });
 });
 on('POST', '/api/auth/login', (req, res) => {
-  if (throttled(req)) return res.status(429).json({ error: 'Too many attempts. Try again in 15 minutes.' });
   const id = str(req.body?.id, 120).toLowerCase(), password = String(req.body?.password || '');
+  // limited per IP and per account, so rotating IP addresses cannot brute-force one login
+  if (limit(req, 'login', 8, 9e5) || limit(req, 'acct', 8, 9e5, id)) return res.status(429).json({ error: 'Too many attempts. Try again in 15 minutes.' });
   const eq = (a, b) => a.length === b.length && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
   if (id === db.admin.email && eq(hashPw(password, db.admin.salt), db.admin.hash)) {
-    fails.delete(req.ip); return res.json({ token: newSession('admin'), role: 'admin' });
+    clearLimit(req, 'login'); clearLimit(req, 'acct', id); return res.json({ token: newSession('admin'), role: 'admin', mustChange: !!db.admin.mustChange });
   }
   const phone = normPhone(id);
   const u = db.users.find(x => (x.email && x.email === id) || (phone.length === 11 && x.phone === phone));
-  if (u && eq(hashPw(password, u.salt), u.hash)) { fails.delete(req.ip); return res.json({ token: newSession('user', u.id), role: 'user', user: publicUser(u) }); }
-  fail(req); res.status(401).json({ error: 'Wrong phone/email or password' });
+  if (u && eq(hashPw(password, u.salt), u.hash)) { clearLimit(req, 'login'); clearLimit(req, 'acct', id); return res.json({ token: newSession('user', u.id), role: 'user', user: publicUser(u) }); }
+  res.status(401).json({ error: 'Wrong phone/email or password' });
 });
 on('GET', '/api/auth/me', (req, res) => {
   const s = session(req); if (!s) return res.json({ role: null });
-  res.json(s.role === 'admin' ? { role: 'admin', email: db.admin.email } : { role: 'user', user: publicUser(db.users.find(u => u.id === s.userId)) });
+  res.json(s.role === 'admin' ? { role: 'admin', email: db.admin.email, mustChange: !!db.admin.mustChange } :{ role: 'user', user: publicUser(db.users.find(u => u.id === s.userId)) });
 });
 on('POST', '/api/auth/logout', (req, res) => { const s = session(req); if (s) { delete db.sessions[s.key]; save(); } res.json({ ok: true }); });
 on('PUT', '/api/account', member, (req, res) => {
@@ -153,31 +184,41 @@ on('PUT', '/api/account', member, (req, res) => {
     if (!b.currentPassword || hashPw(b.currentPassword, u.salt) !== u.hash) return res.status(400).json({ error: 'Current password is wrong' });
     if (String(b.newPassword).length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
     u.salt = crypto.randomBytes(16).toString('hex'); u.hash = hashPw(b.newPassword, u.salt);
+    dropSessions((s, k) => s.userId === u.id && k !== session(req).key); // sign out every other device
   }
   save(); res.json({ user: publicUser(u) });
 });
 on('GET', '/api/account/orders', member, (req, res) => res.json(db.orders.filter(o => o.userId === req.user.id)));
 
 // ---------- orders (logged when a customer taps "Order on WhatsApp") ----------
-const lastOrder = new Map();
 on('POST', '/api/orders', (req, res) => {
   const b = req.body || {}, s = session(req);
-  const items = (Array.isArray(b.items) ? b.items : []).slice(0, 30).map(i => ({ slug: str(i.slug, 120), name: str(i.name, 150), model: str(i.model, 60), color: str(i.color, 60), image: str(i.image, 200), qty: Math.max(1, Math.min(99, parseInt(i.qty) || 1)), price: Number(i.price) || 0 }));
+  // every price, discount and delivery charge is recalculated here — the browser's numbers are never trusted
+  const items = (Array.isArray(b.items) ? b.items : []).slice(0, 30).map(i => {
+    const p = db.products.find(x => x.slug === str(i.slug, 120) && x.active !== false); if (!p) return null;
+    const v = p.variants.find(x => x.name === str(i.color, 60)) || p.variants[0];
+    return { slug: p.slug, name: p.name, model: str(i.model, 60), color: v?.name || '', image: v?.images?.[0] || '', qty: Math.max(1, Math.min(99, parseInt(i.qty) || 1)), price: finalPrice(p) };
+  }).filter(Boolean);
   if (!items.length) return res.status(400).json({ error: 'No items' });
+  if (items.length !== (Array.isArray(b.items) ? b.items.length : 0)) return res.status(400).json({ error: 'One of these items is no longer available — please refresh the page' });
   if (!/^01[3-9]\d{8}$/.test(normPhone(b.phone))) return res.status(400).json({ error: 'Please enter a valid 11-digit mobile number' });
   b.phone = normPhone(b.phone);
-  if (Date.now() - (lastOrder.get(req.ip) || 0) < 4000) return res.status(429).json({ error: 'Please wait a few seconds and try again' });
-  lastOrder.set(req.ip, Date.now());
-  const no = 'CC' + (1001 + db.orders.length);
+  if (limit(req, 'order', 1, 4000)) return res.status(429).json({ error: 'Please wait a few seconds and try again' });
+  const area = b.area === 'outside' ? 'outside' : 'inside';
+  const subtotal = items.reduce((a, i) => a + i.price * i.qty, 0);
+  const c = findCoupon(b.coupon);
+  const discount = c && subtotal >= (Number(c.minOrder) || 0) ? Math.round(c.type === 'percent' ? subtotal * c.value / 100 : Math.min(subtotal, c.value)) : 0;
+  const delivery = Number(db.settings[area === 'outside' ? 'deliveryOutside' : 'deliveryInside']) || 0;
+  const no = nextOrderNo();
   db.orders.unshift({ id: uid(), no, createdAt: Date.now(), status: 'new', userId: s?.role === 'user' ? s.userId : null,
-    customer: { name: str(b.name, 80), phone: str(b.phone, 30), address: str(b.address, 400), area: b.area === 'outside' ? 'outside' : 'inside', note: str(b.note) },
-    items, coupon: str(b.coupon, 30), discount: Number(b.discount) || 0, delivery: Number(b.delivery) || 0, total: Number(b.total) || 0 });
+    customer: { name: str(b.name, 80), phone: str(b.phone, 30), address: str(b.address, 400), area, note: str(b.note) },
+    items, coupon: discount ? c.code : '', discount, delivery, total: subtotal - discount + delivery });
   if (db.orders.length > 5000) db.orders.length = 5000;
-  save(); res.json({ ok: true, no });
+  save(); res.json({ ok: true, no, items, subtotal, discount, delivery, total: subtotal - discount + delivery, coupon: discount ? c.code : '' });
 });
 
 // ---------- admin API ----------
-on('GET', '/api/admin/site', admin, (req, res) => { const { admin: a, products, orders, users, sessions, ...rest } = db; res.json({ ...rest, admin: { email: a.email } }); });
+on('GET', '/api/admin/site', admin, (req, res) => { const { admin: a, products, orders, users, sessions, ...rest } = db; res.json({ ...rest, admin: { email: a.email, mustChange: !!a.mustChange } }); });
 on('GET', '/api/admin/products', admin, (req, res) => res.json(db.products));
 on('POST', '/api/admin/products', admin, (req, res) => { const p = normalizeProduct(req.body, { id: uid(), createdAt: Date.now() }); db.products.unshift(p); save(); res.json(p); });
 on('PUT', '/api/admin/products/:id', admin, (req, res) => {
@@ -195,22 +236,34 @@ on('PUT', '/api/admin/settings', admin, (req, res) => {
   save(); res.json({ ok: true });
 });
 on('POST', '/api/admin/password', admin, (req, res) => {
-  const { email, password } = req.body || {};
+  const { email, password, currentPassword } = req.body || {};
+  if (limit(req, 'adminpw', 8, 9e5)) return res.status(429).json({ error: 'Too many attempts. Try again in 15 minutes.' });
+  // the current password is required, so a stolen session token alone cannot take the account over
+  if (hashPw(String(currentPassword || ''), db.admin.salt) !== db.admin.hash) return res.status(400).json({ error: 'Current password is wrong' });
   const e = str(email || db.admin.email, 120).toLowerCase();
   if (!/^\S+@\S+\.\S+$/.test(e)) return res.status(400).json({ error: 'Enter a valid email' });
   if (db.users.some(u => u.email === e)) return res.status(409).json({ error: 'A customer already uses this email' });
-  if (password && String(password).length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  if (password && String(password).length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  if (password && /^(cravat@2026|password|12345678)$/i.test(String(password))) return res.status(400).json({ error: 'Please choose a less obvious password' });
   db.admin.email = e;
-  if (password) { db.admin.salt = crypto.randomBytes(16).toString('hex'); db.admin.hash = hashPw(password, db.admin.salt); }
-  if (password) db.settings.passwordChanged = true;
-  save(); res.json({ ok: true });
+  let token;
+  if (password) {
+    db.admin.salt = crypto.randomBytes(16).toString('hex'); db.admin.hash = hashPw(password, db.admin.salt);
+    db.admin.mustChange = false; db.settings.passwordChanged = true;
+    dropSessions(s => s.role === 'admin'); token = newSession('admin'); // sign out every other admin device
+  }
+  save(); res.json({ ok: true, token });
 });
 on('POST', '/api/admin/upload', admin, (req, res) => {
   const out = [];
+  // the file must really start with image bytes — a renamed HTML/script file is rejected
+  const SIG = { jpeg: b => b[0] === 0xff && b[1] === 0xd8, png: b => b.toString('hex', 0, 8) === '89504e470d0a1a0a', gif: b => b.toString('ascii', 0, 3) === 'GIF', webp: b => b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP', avif: b => b.toString('ascii', 4, 8) === 'ftyp' };
   for (const d of (req.body?.images || []).slice(0, 20)) {
     const m = /^data:image\/(jpeg|png|webp|gif|avif);base64,(.+)$/.exec(d || ''); if (!m) continue;
+    const buf = Buffer.from(m[2], 'base64');
+    if (buf.length < 12 || buf.length > 5 * 1024 * 1024 || !SIG[m[1]](buf)) continue;
     const name = Date.now() + '-' + uid() + '.' + (m[1] === 'jpeg' ? 'jpg' : m[1]);
-    fs.writeFileSync(path.join(UPLOADS, name), Buffer.from(m[2], 'base64')); out.push('/uploads/' + name);
+    fs.writeFileSync(path.join(UPLOADS, name), buf); out.push('/uploads/' + name);
   }
   res.json(out);
 });
@@ -232,7 +285,7 @@ on('POST', '/api/admin/orders', admin, (req, res) => {
   const subtotal = items.reduce((a, i) => a + i.price * i.qty, 0), discount = Math.min(subtotal, Math.max(0, Number(b.discount) || 0)), delivery = Math.max(0, Number(b.delivery) || 0);
   const status = ['new', 'confirmed', 'shipped', 'delivered', 'cancelled'].includes(b.status) ? b.status : 'confirmed';
   const c = b.customer || {};
-  const o = { id: uid(), no: 'CC' + (1001 + db.orders.length), createdAt: Date.now(), status, source: 'manual', userId: null,
+  const o = { id: uid(), no: nextOrderNo(), createdAt: Date.now(), status, source: 'manual', userId: null,
     customer: { name: str(c.name, 80), phone: str(c.phone, 30), area: c.area === 'outside' ? 'outside' : 'inside', district: str(c.district, 60), thana: str(c.thana, 60), address: str(c.address, 400), note: str(c.note) },
     items, coupon: '', discount, delivery, total: subtotal - discount + delivery, payment: str(b.payment || 'Cash on delivery', 40), paid: Math.max(0, Number(b.paid) || 0) };
   db.orders.unshift(o);
@@ -284,11 +337,11 @@ on('GET', '/product/:slug', (req, res) => {
   let html = fs.readFileSync(page('product.html'), 'utf8');
   const p = db.products.find(x => x.slug === req.params.slug);
   if (p) { // Open Graph tags → rich preview when the link is shared on WhatsApp / Facebook
-    const origin = `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers['x-forwarded-host'] || req.headers.host}`;
+    const o = origin(req);
     const img = p.variants?.[0]?.images?.[0] || db.settings.logo;
     html = html.replace(/<title>.*?<\/title>/, `<title>${esc(p.name)} | ${esc(db.settings.siteName)}</title>
 <meta name="description" content="${esc(p.description.slice(0, 160))}"><meta property="og:title" content="${esc(p.name)} — ৳${finalPrice(p)}">
-<meta property="og:description" content="${esc(p.description.slice(0, 160))}"><meta property="og:image" content="${origin}${img}"><meta property="og:type" content="product">`);
+<meta property="og:description" content="${esc(p.description.slice(0, 160))}"><meta property="og:image" content="${esc(o + img)}"><meta property="og:type" content="product">`);
   }
   res.html(html);
 });
@@ -312,26 +365,46 @@ function sendFile(res, file, status = 200) {
   });
 }
 
+// one place for every browser-side protection: blocks framing, MIME sniffing, foreign scripts and data leaving the site
+const CSP = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src https://maps.google.com https://www.google.com; form-action 'self'; frame-ancestors 'self'; base-uri 'self'; object-src 'none'";
+function secure(req, res) {
+  res.setHeader('Content-Security-Policy', CSP);
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=(), interest-cohort=()');
+  if (String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https') res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+}
+
 const server = http.createServer((req, res) => {
   res.status = c => (res.statusCode = c, res);
+  secure(req, res);
   res.req = req;
   res.json = o => { const body = JSON.stringify(o); res.setHeader('Content-Type', 'application/json'); if (body.length > 2048 && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) { res.setHeader('Content-Encoding', 'gzip'); return res.end(require('zlib').gzipSync(body)); } res.end(body); };
   res.html = h => { res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.setHeader('Cache-Control', 'no-cache'); res.end(h); };
   res.file = f => sendFile(res, f);
-  req.ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+  // behind a proxy the LAST forwarded entry is the one our own proxy added, so a client cannot forge its IP past the rate limits
+  const fwd = String(req.headers['x-forwarded-for'] || '').split(',').map(s => s.trim()).filter(Boolean);
+  req.ip = (TRUST_PROXY && fwd.length ? fwd[fwd.length - 1] : req.socket.remoteAddress) || '';
   let pathname; try { pathname = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { return res.status(400).end(); }
+  if (FORCE_HTTPS && String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'http') {
+    res.writeHead(301, { Location: origin(req).replace(/^http:/, 'https:') + req.url }); return res.end();
+  }
   const route = routes.find(r => r.method === req.method && r.re.test(pathname));
   if (!route) {
     if (req.method !== 'GET' && req.method !== 'HEAD') return res.status(404).json({ error: 'Not found' });
     if (pathname.startsWith('/api/') || pathname.startsWith('/data')) return res.status(404).json({ error: 'Not found' });
     const file = path.normalize(path.join(PUB, pathname === '/' ? 'index.html' : pathname));
-    if (!file.startsWith(PUB)) return res.status(403).end();
+    if (file !== PUB && !file.startsWith(PUB + path.sep)) return res.status(403).end();
     return sendFile(res, file);
   }
   const m = route.re.exec(pathname); req.params = {}; route.keys.forEach((k, i) => req.params[k] = m[i + 1]);
-  const chunks = []; let size = 0;
-  req.on('data', c => { size += c.length; if (size > 30 * 1024 * 1024) req.destroy(); else chunks.push(c); });
+  // only the photo upload is allowed to be large; everything else stays small so a flood cannot eat the server's memory
+  const MAX = pathname === '/api/admin/upload' ? 30 * 1024 * 1024 : 1024 * 1024;
+  const chunks = []; let size = 0, big = false;
+  req.on('data', c => { size += c.length; if (size > MAX) { big = true; chunks.length = 0; } else chunks.push(c); });
   req.on('end', () => {
+    if (big) return res.status(413).json({ error: 'That was too large' });
     try { req.body = chunks.length ? JSON.parse(Buffer.concat(chunks).toString()) : {}; } catch { return res.status(400).json({ error: 'Bad request' }); }
     let i = 0; const next = () => { const h = route.handlers[i++]; h && h(req, res, next); };
     try { next(); } catch (e) { console.error(e); res.status(500).json({ error: 'Server error' }); }
@@ -341,8 +414,12 @@ const onReady = () => {
   let ips = []; try { ips = Object.values(require('os').networkInterfaces()).flat().filter(n => n && n.family === 'IPv4' && !n.internal).map(n => n.address); } catch {}
   console.log(`\n  Cravat Cases is running\n  • This computer:  http://localhost:${PORT}`);
   ips.forEach(ip => console.log(`  • Phone (same Wi-Fi): http://${ip}:${PORT}`));
+  if (firstRunPw) console.log(`\n  ADMIN LOGIN → ${db.admin.email} / ${firstRunPw}` + (db.admin.mustChange ? `\n  Change it at /admin → Account. Nothing can be edited until you do.` : ''));
   console.log('');
 };
+// a single bad request must never take the shop offline
+process.on('uncaughtException', e => console.error('uncaught:', e));
+process.on('unhandledRejection', e => console.error('unhandled:', e));
 // cPanel (Passenger) gives PORT as a socket path — only bind 0.0.0.0 for normal numeric ports
 if (/^\d+$/.test(String(PORT))) server.listen(+PORT, '0.0.0.0', onReady); else server.listen(PORT, onReady);
 // flush pending writes on shutdown (Ctrl+C)
